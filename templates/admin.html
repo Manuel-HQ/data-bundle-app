@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin — Data Requests</title>
+  <style>
+    body { font-family: system-ui, Arial, sans-serif; background:#0b0b0b; color:#eee; }
+    h1 { text-align:center; margin: 24px 0; }
+    .wrap { max-width: 1100px; margin: 0 auto; padding: 0 16px 48px; }
+    table { width: 100%; border-collapse: collapse; background:#121212; border-radius:12px; overflow:hidden; }
+    th, td { padding: 12px 10px; border-bottom: 1px solid #222; text-align:center; }
+    th { position: sticky; top: 0; background:#151515; }
+    tr:hover { background:#1a1a1a; }
+    .badge { padding: 4px 10px; border-radius: 999px; font-size: 12px; font-weight:600; display:inline-block; }
+    .b-request { background:#3a3a00; color:#ffd700; }
+    .b-paid { background:#003a3a; color:#00d4d4; }
+    .b-credited { background:#003a00; color:#33ff77; }
+    button { padding: 8px 12px; border:none; border-radius:8px; cursor:pointer; }
+    .confirm { background:#21c55d; color:#0b0b0b; }
+    .disabled { background:#2b2b2b; color:#777; cursor:not-allowed; }
+    .meta { font-size:12px; color:#aaa; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Admin Panel — Data Purchase Requests</h1>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>User Email</th>
+          <th>Network</th>
+          <th>Bundle</th>
+          <th>Recipient</th>
+          <th>Amount (GHS)</th>
+          <th>Status</th>
+          <th>Created</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for p in purchases %}
+        <tr>
+          <td>{{ p.id }}</td>
+          <td>{{ p.email }}</td>
+          <td>{{ p.network }}</td>
+          <td>{{ p.bundle }}</td>
+          <td>{{ p.recipient }}</td>
+          <td>{{ '%.2f' | format(p.amount) }}</td>
+          <td>
+            {% if p.status == 'credited' %}
+              <span class="badge b-credited">Credited</span>
+            {% elif p.status == 'payment_completed' %}
+              <span class="badge b-paid">Payment Completed</span>
+            {% else %}
+              <span class="badge b-request">Request Created</span>
+            {% endif %}
+            <div class="meta">
+              {% if p.stages and p.stages.request_created %}
+                Requested: {{ p.stages.request_created.at }}<br/>
+              {% endif %}
+              {% if p.stages and p.stages.payment_completed and p.stages.payment_completed.done %}
+                Paid: {{ p.stages.payment_completed.at }}
+              {% endif %}
+              {% if p.status == 'credited' and p.stages.credited %}<br/>
+                Credited: {{ p.stages.credited.at }}
+              {% endif %}
+            </div>
+          </td>
+          <td>{{ p.created_at }}</td>
+          <td>
+            {% if p.status != 'credited' %}
+              <form action="{{ url_for('admin_confirm', pid=p.id) }}" method="POST" onsubmit="return confirm('Confirm credit for ID {{ p.id }}?');">
+                <button class="confirm" type="submit">Confirm Credit</button>
+              </form>
+            {% else %}
+              <button class="disabled" disabled>✅ Credited</button>
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</body>
+</html>

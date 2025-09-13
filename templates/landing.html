@@ -1,0 +1,50 @@
+<!-- Filename: landing.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Landing Page</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='landing.css') }}">
+</head>
+
+<body>
+
+  <header class="hero">
+    <h1>Manuel Data Bundles</h1>
+    <p>Top up your wallet, buy data for any Ghanaian network — anytime, anywhere.</p>
+    <div class="cta-buttons">
+      <a href="{{ url_for('login') }}">Login</a>
+      <a href="{{ url_for('register') }}">Sign Up</a>
+
+    </div>
+  </header>
+
+  <section class="features">
+    <h2>Why Choose Us?</h2>
+    <div class="feature-list">
+      <div class="feature-card">
+        <h3>Instant Delivery</h3>
+        <p>Data is delivered to the recipient within seconds after purchase.</p>
+      </div>
+      <div class="feature-card">
+        <h3>Secure Wallet</h3>
+        <p>Top up with Paystack and enjoy safe, cashless transactions.</p>
+      </div>
+      <div class="feature-card">
+        <h3>All Networks</h3>
+        <p>MTN, Vodafone, AirtelTigo — all in one place.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="faq-link">
+    <p>Have questions? <a href="{{ url_for('faq') }}">Check our FAQ</a></p>
+  </section>
+
+  <footer>
+    <p>&copy; {{ current_year }} Fast Data Ghana. Powered by Paystack.</p>
+  </footer>
+
+</body>
+</html>

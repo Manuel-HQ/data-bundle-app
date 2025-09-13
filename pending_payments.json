@@ -1,0 +1,26 @@
+[
+    {
+        "email": "emmanuelzoryiku344@gmail.com",
+        "amount": 56.0,
+        "provider": "AirtelTigo",
+        "number": "0530280215",
+        "reference": "5w3ek9qta5",
+        "created_at": "2025-08-21 11:06:42"
+    },
+    {
+        "email": "emmanuelzoryiku344@gmail.com",
+        "amount": 100.0,
+        "provider": "MTN",
+        "number": "0530280215",
+        "reference": "evhd25clve",
+        "created_at": "2025-08-21 11:09:55"
+    },
+    {
+        "email": "amaharriet011@gmail.com",
+        "amount": 2000.0,
+        "provider": "MTN",
+        "number": "0557189414",
+        "reference": "cqs1vg311h",
+        "created_at": "2025-08-27 12:14:40"
+    }
+]

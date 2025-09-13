@@ -1,0 +1,82 @@
+/* FAQ.css */
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #0d0d0d;
+  color: #fff;
+  background-image: radial-gradient(circle at top left, #1a1a1a, #0d0d0d);
+}
+
+
+
+.faq-container {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 20px;
+}
+
+.faq-item {
+  margin-bottom: 15px;
+  border-radius: 15px;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.15),
+              0 0 35px rgba(0, 255, 255, 0.1);
+  overflow: hidden;
+  transition: box-shadow 0.3s ease;
+}
+
+
+.question {
+  width: 100%;
+  background: transparent;
+  color: #00ffe5;
+  font-size: 1.1rem;
+  font-weight: 600;
+  padding: 16px 20px;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  outline: none;
+  transition: background 0.3s ease;
+}
+
+.question:hover {
+  background: rgba(0, 255, 255, 0.05);
+}
+
+.question.active {
+  background: rgba(0, 255, 255, 0.1);
+}
+
+.answer {
+  display: none;
+  padding: 0 20px 20px;
+  font-size: 1rem;
+  color: #ccc;
+  line-height: 1.6;
+}
+
+.answer a {
+  color: #00ffff;
+  text-decoration: underline;
+}
+
+.back {
+  text-align: center;
+  margin-top: 30px;
+}
+
+.back a {
+  color: #1b5252;
+  font-weight: bold;
+  text-decoration: none;
+  padding: 10px 15px;
+  border: 1px solid #00ffff33;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 8px rgba(0, 255, 255, 0.2);
+}
+

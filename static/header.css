@@ -1,0 +1,113 @@
+/* ========== HEADER STYLES ========== */
+.site-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #1c1c1e;
+  padding: 15px 30px;
+  color: white;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.5);
+  position: sticky;
+  top: 0;
+  z-index: 999;
+}
+
+.logo {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.nav {
+  display: flex;
+  gap: 20px;
+}
+
+.nav a {
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s;
+}
+
+.nav a:hover {
+  color: #f39c12;
+}
+
+.login-btn {
+  padding: 6px 14px;
+  background: #f39c12;
+  border-radius: 5px;
+  color: #000;
+  font-weight: bold;
+}
+
+.hamburger {
+  display: none;
+  font-size: 28px;
+  color: white;
+  cursor: pointer;
+}
+
+.overlay-nav {
+  height: 100%;
+  width: 0%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: rgba(18, 18, 18, 0.98);
+  z-index: 1000;
+  overflow-x: hidden;
+  transition: 0.5s ease;
+}
+
+.overlay-content {
+  position: absolute;
+  top: 25%;
+  width: 100%;
+  text-align: center;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.overlay-content a {
+  display: block;
+  padding: 1rem;
+  font-size: 1.4rem;
+  color: #f39c12;
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+.overlay-content a:hover {
+  background: #f39c12;
+  color: #121212;
+  border-radius: 10px;
+  margin: 0.5rem;
+}
+
+.closebtn {
+  position: absolute;
+  top: 15px;
+  right: 30px;
+  font-size: 2.5rem;
+  color: white;
+  cursor: pointer;
+}
+
+/* Fade-in animation */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive Header */
+@media (max-width: 768px) {
+  .nav {
+    display: none;
+  }
+
+  .hamburger {
+    display: block;
+    position: absolute;
+    right: 15px;
+  }
+}
