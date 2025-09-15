@@ -1,193 +1,212 @@
-
-    * {
+ body {
       margin: 0;
-      padding: 0;
-      box-sizing: border-box;
+      font-family: "Segoe UI", Roboto, sans-serif;
+      background: #f5f7fa;
+      color: #333;
     }
 
-    body {
-  margin: 0;
-  padding: 0;
-  font-family: 'Segoe UI', sans-serif;
-   background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
-  color: #ffffff;
-  background-size: cover;
-  color: #fff;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
+    /* Header */
+    .site-header {
+      background: #0d6efd;
+      color: white;
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .site-header .logo {
+      font-size: 1.3rem;
+      font-weight: bold;
+    }
+    .nav a {
+      margin: 0 10px;
+      text-decoration: none;
+      color: white;
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+    .nav a:hover {
+      color: #ffdd57;
+    }
+    .hamburger {
+      display: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
 
-    
+    /* Mobile Nav */
+    .overlay-nav {
+      height: 100%;
+      width: 0;
+      position: fixed;
+      z-index: 1000;
+      top: 0;
+      left: 0;
+      background-color: rgba(13, 110, 253, 0.95);
+      overflow-x: hidden;
+      transition: 0.4s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 60px;
+    }
+    .overlay-nav a {
+      padding: 12px;
+      font-size: 1.2rem;
+      color: white;
+      display: block;
+      transition: 0.3s;
+    }
+    .overlay-nav a:hover {
+      color: #ffdd57;
+    }
+    .closebtn {
+      position: absolute;
+      top: 15px;
+      right: 25px;
+      font-size: 2rem;
+      color: white;
+    }
 
+    /* Form Card */
     .container {
-      flex: 1;
       display: flex;
       justify-content: center;
       align-items: center;
       padding: 30px;
     }
-
     .form-card {
-      background: rgba(20, 20, 20, 0.6);
-      backdrop-filter: blur(15px);
-      border-radius: 15px;
-      padding: 40px;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+      padding: 30px;
       width: 100%;
-      max-width: 450px;
-      box-shadow: 0 0 25px rgba(0, 238, 255, 0.3), 0 0 40px rgba(255, 0, 255, 0.15);
+      max-width: 480px;
+      animation: fadeIn 0.5s ease;
     }
-
     .form-card h2 {
-      text-align: center;
-      margin-bottom: 30px;
-      color: #ffffff;
-      text-shadow: 0 0 5px #00e5ff;
-    }
-
-    label {
-      display: block;
-      margin-bottom: 8px;
-      font-weight: 500;
-      color: #eeeeee;
-    }
-
-    input,
-    select {
-      width: 100%;
-      padding: 12px;
       margin-bottom: 20px;
-      border: 1px solid #555;
-      border-radius: 10px;
-      background-color: #1a1a1a;
-      color: #00e5ff;
-      font-size: 15px;
-      box-shadow: inset 0 0 10px rgba(0, 255, 255, 0.1);
-      transition: 0.3s ease;
+      color: #0d6efd;
+      text-align: center;
     }
-
-    input:hover,
-    select:hover,
-    input:focus,
-    select:focus {
-      background-color: #262626;
-      border-color: #00e5ff;
-      box-shadow: 0 0 8px #00e5ff;
+    label {
+      font-weight: 600;
+      margin-top: 12px;
+      display: block;
+    }
+    .input-group {
+      display: flex;
+      align-items: center;
+      margin-top: 8px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 10px;
+      background: #fafafa;
+    }
+    .input-group i {
+      color: #0d6efd;
+      margin-right: 10px;
+    }
+    select, input[type="text"] {
+      border: none;
       outline: none;
+      flex: 1;
+      background: transparent;
+      font-size: 1rem;
     }
 
+    /* Buttons */
     .btn {
+      margin-top: 20px;
       width: 100%;
       padding: 12px;
-      background: linear-gradient(135deg, #00e5ff, #ff00ff);
-      color: #000;
-      font-weight: bold;
-      font-size: 16px;
       border: none;
-      border-radius: 10px;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
       cursor: pointer;
-      transition: 0.3s ease;
-      box-shadow: 0 0 12px #00e5ff, 0 0 25px #ff00ff;
+      background: #0d6efd;
+      color: white;
+      transition: background 0.3s;
     }
-
     .btn:hover {
-      background: linear-gradient(135deg, #00bcd4, #ff33cc);
-      box-shadow: 0 0 20px #00e5ff, 0 0 30px #ff00ff;
+      background: #0b5ed7;
     }
-
     .back-link {
       display: block;
       text-align: center;
-      color: #bbbbbb;
-      margin-top: 20px;
-      font-size: 14px;
+      margin-top: 15px;
+      color: #0d6efd;
       text-decoration: none;
-      transition: color 0.3s ease;
+      font-weight: 500;
     }
 
-    .back-link:hover {
-      color: #ffffff;
-    }
+    /* Modal */
     .modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.65);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-}
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.6);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 2000;
+    }
+    .modal-box {
+      background: white;
+      padding: 25px;
+      border-radius: 12px;
+      width: 90%;
+      max-width: 420px;
+      text-align: center;
+      animation: scaleIn 0.3s ease;
+    }
+    .modal-box h3 {
+      color: #0d6efd;
+      margin-bottom: 15px;
+    }
+    .modal-details {
+      margin: 15px 0;
+      font-size: 0.95rem;
+      color: #444;
+      text-align: left;
+    }
+    .modal-actions {
+      display: flex;
+      justify-content: space-around;
+    }
+    .modal-actions button,
+    .modal-actions a {
+      padding: 10px 15px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    .modal-actions button {
+      background: #0d6efd;
+      color: white;
+    }
+    .modal-actions button:hover {
+      background: #0b5ed7;
+    }
+    .btn-ghost {
+      background: transparent;
+      border: 1px solid #ddd;
+    }
 
-.modal-box {
-  background: #1c1c1c;
-  color: #fff;
-  padding: 2rem;
-  border-radius: 12px;
-  width: 90%;
-  max-width: 400px;
-  box-shadow: 0 0 25px rgba(0, 255, 255, 0.2);
-  backdrop-filter: blur(10px);
-  animation: pop-in 0.3s ease-out;
-}
+    /* Animations */
+    @keyframes fadeIn {
+      from {opacity: 0; transform: translateY(15px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+    @keyframes scaleIn {
+      from {transform: scale(0.9); opacity: 0;}
+      to {transform: scale(1); opacity: 1;}
+    }
 
-.modal-box h3 {
-  margin-top: 0;
-  font-size: 1.4rem;
-  color: #00ffc3;
-  text-align: center;
-}
-
-.modal-details {
-  margin: 1rem 0;
-  line-height: 1.6;
-}
-
-.modal-actions {
-  display: flex;
-  justify-content: space-between;
-  gap: 1rem;
-}
-
-.modal-actions button {
-  padding: 0.5rem 1rem;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: bold;
-  transition: background 0.3s ease;
-}
-
-.modal-actions button:first-child {
-  background: #00ffc3;
-  color: #000;
-}
-
-.modal-actions button:last-child {
-  background: #444;
-  color: #fff;
-}
-
-@keyframes pop-in {
-  from {
-    opacity: 0;
-    transform: scale(0.9);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-@media (max-width: 768px) {
-  .nav {
-    display: none;
-  }
-
-  .hamburger {
-    display: block;
-    position: absolute;
-    right: 15px;
-  }
-}
+    /* Mobile */
+    @media (max-width: 768px) {
+      .nav { display: none; }
+      .hamburger { display: block; }
+    }

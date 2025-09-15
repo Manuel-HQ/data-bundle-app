@@ -1,82 +1,87 @@
-/* FAQ.css */
-
 body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background: #f9f9f9;
   margin: 0;
   padding: 0;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: #0d0d0d;
-  color: #fff;
-  background-image: radial-gradient(circle at top left, #1a1a1a, #0d0d0d);
+  color: #333;
 }
 
-
+.faq-title {
+  text-align: center;
+  margin: 2rem 0;
+  font-size: 2rem;
+  color: #2c3e50;
+}
 
 .faq-container {
-  max-width: 900px;
-  margin: 40px auto;
-  padding: 20px;
+  width: 90%;
+  max-width: 800px;
+  margin: auto;
+  padding-bottom: 2rem;
 }
 
 .faq-item {
-  margin-bottom: 15px;
-  border-radius: 15px;
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(12px);
-  box-shadow: 0 0 20px rgba(0, 255, 255, 0.15),
-              0 0 35px rgba(0, 255, 255, 0.1);
+  margin-bottom: 1rem;
+  border-radius: 10px;
   overflow: hidden;
-  transition: box-shadow 0.3s ease;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
 }
-
 
 .question {
   width: 100%;
-  background: transparent;
-  color: #00ffe5;
-  font-size: 1.1rem;
-  font-weight: 600;
-  padding: 16px 20px;
+  padding: 1rem;
+  background: #3498db;
   border: none;
-  text-align: left;
-  cursor: pointer;
   outline: none;
+  text-align: left;
+  font-size: 1rem;
+  font-weight: bold;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
   transition: background 0.3s ease;
 }
 
 .question:hover {
-  background: rgba(0, 255, 255, 0.05);
-}
-
-.question.active {
-  background: rgba(0, 255, 255, 0.1);
+  background: #2980b9;
 }
 
 .answer {
-  display: none;
-  padding: 0 20px 20px;
-  font-size: 1rem;
-  color: #ccc;
-  line-height: 1.6;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease;
+  padding: 0 1rem;
+  background: #fff;
+  color: #555;
+}
+
+.question.active + .answer {
+  padding: 1rem;
 }
 
 .answer a {
-  color: #00ffff;
+  color: #3498db;
+  text-decoration: none;
+}
+
+.answer a:hover {
   text-decoration: underline;
 }
 
 .back {
+  margin-top: 2rem;
   text-align: center;
-  margin-top: 30px;
 }
 
 .back a {
-  color: #1b5252;
-  font-weight: bold;
   text-decoration: none;
-  padding: 10px 15px;
-  border: 1px solid #00ffff33;
-  border-radius: 8px;
-  transition: all 0.3s ease;
-  box-shadow: 0 0 8px rgba(0, 255, 255, 0.2);
+  font-weight: bold;
+  color: #3498db;
+  font-size: 1rem;
 }
 
+.back a:hover {
+  text-decoration: underline;
+}

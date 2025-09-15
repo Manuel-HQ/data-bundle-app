@@ -5,113 +5,67 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Contact Us - Data Bundle Ghana</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='header.css') }}">
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f9f9f9;
-      margin: 0;
-      padding: 0;
-      background: linear-gradient(120deg, #1a1a1a, #0d0d0d, #001f3f);
-  color: #e0e0e0;
-    }
-    .contact-container {
-      max-width: 600px;
-      margin: 50px auto;
-      background: #fff;
-      padding: 25px;
-      border-radius: 12px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    }
-    h2 {
-      text-align: center;
-      color: #2c3e50;
-    }
-    form {
-      margin-top: 20px;
-    }
-    label {
-      display: block;
-      margin-bottom: 5px;
-      font-weight: bold;
-    }
-    input, textarea, button {
-      width: 100%;
-      padding: 10px;
-      margin-bottom: 15px;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-    }
-    button {
-      background: #27ae60;
-      color: #fff;
-      border: none;
-      cursor: pointer;
-      font-size: 16px;
-    }
-    button:hover {
-      background: #219150;
-    }
-    .info {
-      margin-top: 20px;
-      text-align: center;
-    }
-    .info p {
-      margin: 8px 0;
-    }
-  </style>
+  <link rel="stylesheet" href="{{ url_for('static', filename='contact.css') }}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
   <header class="site-header">
-    <div class="logo">📶 Manuel Data</div>
+    <div class="logo"><i class="fas fa-signal"></i> Manuel Data</div>
     <nav class="nav">
-  <a href="{{ url_for('dashboard') }}">Home</a>
-  <a href="{{ url_for('purchase') }}">Buy Data</a>
-  <a href="{{ url_for('profile') }}">Profile</a>
-  <a href="{{ url_for('wallet') }}">Wallet</a>
-  <a href="{{ url_for('faq') }}">FAQ</a>
-
-  <a href="{{ url_for('contact') }}">Contact</a>
-  <a href="{{ url_for('logout') }}" class="login-btn">Logout</a>
-</nav>
-<div class="hamburger" onclick="openNav()">☰</div>
-
+      <a href="{{ url_for('dashboard') }}"><i class="fas fa-home"></i> Home</a>
+      <a href="{{ url_for('purchase') }}"><i class="fas fa-shopping-cart"></i> Buy Data</a>
+      <a href="{{ url_for('profile') }}"><i class="fas fa-user"></i> Profile</a>
+      <a href="{{ url_for('wallet') }}"><i class="fas fa-wallet"></i> Wallet</a>
+      <a href="{{ url_for('faq') }}"><i class="fas fa-question-circle"></i> FAQ</a>
+      <a href="{{ url_for('contact') }}"><i class="fas fa-envelope"></i> Contact</a>
+      <a href="{{ url_for('logout') }}" class="login-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+    </nav>
+    <div class="hamburger" onclick="openNav()"><i class="fas fa-bars"></i></div>
   </header>
-    <div id="mobileNav" class="overlay-nav">
+
+  <div id="mobileNav" class="overlay-nav">
     <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
     <div class="overlay-content">
-     <a href="{{ url_for('dashboard') }}">Home</a>
-  <a href="{{ url_for('purchase') }}">Buy Data</a>
-  <a href="{{ url_for('profile') }}">Profile</a>
-  <a href="{{ url_for('wallet') }}">Wallet</a>
-  <a href="{{ url_for('faq') }}">FAQ</a>
-
-  <a href="{{ url_for('contact') }}">Contact</a>
-  <a href="{{ url_for('logout') }}" class="login-btn">Logout</a>
+      <a href="{{ url_for('dashboard') }}">Home</a>
+      <a href="{{ url_for('purchase') }}">Buy Data</a>
+      <a href="{{ url_for('profile') }}">Profile</a>
+      <a href="{{ url_for('wallet') }}">Wallet</a>
+      <a href="{{ url_for('faq') }}">FAQ</a>
+      <a href="{{ url_for('contact') }}">Contact</a>
+      <a href="{{ url_for('logout') }}" class="login-btn">Logout</a>
     </div>
   </div>
+
   <div class="contact-container">
-    <h2>Contact Us</h2>
+    <h2><i class="fas fa-envelope-open-text"></i> Contact Us</h2>
 
     <form method="POST" action="{{ url_for('contact') }}">
-      <label for="name">Full Name</label>
-      <input type="text" id="name" name="name" placeholder="Enter your name" required>
+      <div class="form-group">
+        <label for="name"><i class="fas fa-user"></i> Full Name</label>
+        <input type="text" id="name" name="name" placeholder="Enter your name" required>
+      </div>
 
-      <label for="email">Email Address</label>
-      <input type="email" id="email" name="email" placeholder="Enter your email" required>
+      <div class="form-group">
+        <label for="email"><i class="fas fa-at"></i> Email Address</label>
+        <input type="email" id="email" name="email" placeholder="Enter your email" required>
+      </div>
 
-      <label for="message">Message</label>
-      <textarea id="message" name="message" rows="5" placeholder="Type your message..." required></textarea>
+      <div class="form-group">
+        <label for="message"><i class="fas fa-comment-dots"></i> Message</label>
+        <textarea id="message" name="message" rows="5" placeholder="Type your message..." required></textarea>
+      </div>
 
-      <button type="submit">Send Message</button>
+      <button type="submit"><i class="fas fa-paper-plane"></i> Send Message</button>
     </form>
 
     <div class="info">
-      <h3>Other Ways to Reach Us</h3>
-      <p><strong>Email:</strong> support@databundlegh.com</p>
-      <p><strong>Phone:</strong> +233 24 123 4567</p>
-      <p><strong>Location:</strong> Accra, Ghana</p>
+      <h3><i class="fas fa-headset"></i> Other Ways to Reach Us</h3>
+      <p><i class="fas fa-envelope"></i> support@databundlegh.com</p>
+      <p><i class="fas fa-phone"></i> +233 24 123 4567</p>
+      <p><i class="fas fa-map-marker-alt"></i> Accra, Ghana</p>
     </div>
   </div>
+
   <script>
     function openNav() {
       document.getElementById("mobileNav").style.width = "100%";

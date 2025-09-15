@@ -6,45 +6,75 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Landing Page</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='landing.css') }}">
+  <!-- Font Awesome CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 
 <body>
 
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="{{ url_for('login') }}" class="logo">
+        <i class="fas fa-wifi"></i> Manuel Data
+      </a>
+      <div class="nav-links" id="navLinks">
+        <a href="{{ url_for('login') }}"><i class="fas fa-sign-in-alt"></i> Login</a>
+        <a href="{{ url_for('register') }}" class="signup"><i class="fas fa-user-plus"></i> Sign Up</a>
+      </div>
+      <button class="menu-toggle" id="menuToggle"><i class="fas fa-bars"></i></button>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
   <header class="hero">
     <h1>Manuel Data Bundles</h1>
     <p>Top up your wallet, buy data for any Ghanaian network — anytime, anywhere.</p>
     <div class="cta-buttons">
-      <a href="{{ url_for('login') }}">Login</a>
-      <a href="{{ url_for('register') }}">Sign Up</a>
-
+      <a href="{{ url_for('login') }}"><i class="fas fa-sign-in-alt"></i> Login</a>
+      <a href="{{ url_for('register') }}"><i class="fas fa-user-plus"></i> Sign Up</a>
     </div>
   </header>
 
+  <!-- Features -->
   <section class="features">
     <h2>Why Choose Us?</h2>
     <div class="feature-list">
       <div class="feature-card">
+        <i class="fas fa-bolt feature-icon"></i>
         <h3>Instant Delivery</h3>
         <p>Data is delivered to the recipient within seconds after purchase.</p>
       </div>
       <div class="feature-card">
+        <i class="fas fa-lock feature-icon"></i>
         <h3>Secure Wallet</h3>
         <p>Top up with Paystack and enjoy safe, cashless transactions.</p>
       </div>
       <div class="feature-card">
+        <i class="fas fa-signal feature-icon"></i>
         <h3>All Networks</h3>
         <p>MTN, Vodafone, AirtelTigo — all in one place.</p>
       </div>
     </div>
   </section>
 
+  <!-- FAQ -->
   <section class="faq-link">
     <p>Have questions? <a href="{{ url_for('faq') }}">Check our FAQ</a></p>
   </section>
 
+  <!-- Footer -->
   <footer>
     <p>&copy; {{ current_year }} Fast Data Ghana. Powered by Paystack.</p>
   </footer>
 
+  <!-- JS for mobile menu -->
+  <script>
+    const menuToggle = document.getElementById("menuToggle");
+    const navLinks = document.getElementById("navLinks");
+    menuToggle.addEventListener("click", () => {
+      navLinks.classList.toggle("show");
+    });
+  </script>
 </body>
 </html>

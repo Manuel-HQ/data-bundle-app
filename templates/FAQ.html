@@ -6,88 +6,87 @@
   <title>FAQ - Data Bundle Platform</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='FAQ.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='header.css') }}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
 
   <header class="site-header">
-    <div class="logo">📶 Manuel Data</div>
+    <div class="logo"><i class="fas fa-signal"></i> Manuel Data</div>
     <nav class="nav">
-  <a href="{{ url_for('dashboard') }}">Home</a>
-  <a href="{{ url_for('purchase') }}">Buy Data</a>
-  <a href="{{ url_for('profile') }}">Profile</a>
-  <a href="{{ url_for('wallet') }}">Wallet</a>
-  <a href="{{ url_for('faq') }}">FAQ</a>
-
-  <a href="{{ url_for('contact') }}">Contact</a>
-  <a href="{{ url_for('logout') }}" class="login-btn">Logout</a>
-</nav>
-<div class="hamburger" onclick="openNav()">☰</div>
-
+      <a href="{{ url_for('dashboard') }}">🏠 Home</a>
+      <a href="{{ url_for('purchase') }}">💳 Buy Data</a>
+      <a href="{{ url_for('profile') }}">👤 Profile</a>
+      <a href="{{ url_for('wallet') }}">💰 Wallet</a>
+      <a href="{{ url_for('faq') }}">❓ FAQ</a>
+      <a href="{{ url_for('contact') }}">📞 Contact</a>
+      <a href="{{ url_for('logout') }}" class="login-btn">🚪 Logout</a>
+    </nav>
+    <div class="hamburger" onclick="openNav()"><i class="fas fa-bars"></i></div>
   </header>
-    <div id="mobileNav" class="overlay-nav">
+
+  <div id="mobileNav" class="overlay-nav">
     <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
     <div class="overlay-content">
-      <a href="{{ url_for('dashboard') }}">Home</a>
-  <a href="{{ url_for('purchase') }}">Buy Data</a>
-  <a href="{{ url_for('profile') }}">Profile</a>
-  <a href="{{ url_for('wallet') }}">Wallet</a>
-  <a href="{{ url_for('faq') }}">FAQ</a>
-
-  <a href="{{ url_for('contact') }}">Contact</a>
-  <a href="{{ url_for('logout') }}" class="login-btn">Logout</a>
+     <a href="{{ url_for('dashboard') }}">🏠 Home</a>
+      <a href="{{ url_for('purchase') }}">💳 Buy Data</a>
+      <a href="{{ url_for('profile') }}">👤 Profile</a>
+      <a href="{{ url_for('wallet') }}">💰 Wallet</a>
+      <a href="{{ url_for('faq') }}">❓ FAQ</a>
+      <a href="{{ url_for('contact') }}">📞 Contact</a>
+      <a href="{{ url_for('logout') }}" class="login-btn">🚪 Logout</a>
     </div>
   </div>
-    <h1>Frequently Asked Questions (FAQ)</h1>
-  
+
+  <h1 class="faq-title"><i class="fas fa-question-circle"></i> Frequently Asked Questions</h1>
 
   <main class="faq-container">
     <div class="faq-item">
-      <button class="question">1. How do I buy a data bundle?</button>
+      <button class="question"><i class="fas fa-shopping-bag"></i> How do I buy a data bundle?</button>
       <div class="answer">Log in, choose your network, select a bundle, enter the recipient’s number, and confirm your purchase.</div>
     </div>
 
     <div class="faq-item">
-      <button class="question">2. What is the wallet and how does it work?</button>
+      <button class="question"><i class="fas fa-wallet"></i> What is the wallet and how does it work?</button>
       <div class="answer">Your wallet stores funds on our platform. Top up using Paystack and use it to buy bundles.</div>
     </div>
 
     <div class="faq-item">
-      <button class="question">3. How do I top up my wallet?</button>
+      <button class="question"><i class="fas fa-credit-card"></i> How do I top up my wallet?</button>
       <div class="answer">Go to the Wallet Top-Up page, enter the amount, and pay with Paystack. Your balance updates instantly.</div>
     </div>
 
     <div class="faq-item">
-      <button class="question">4. Which networks are supported?</button>
+      <button class="question"><i class="fas fa-signal"></i> Which networks are supported?</button>
       <div class="answer">We support MTN, Vodafone, and AirtelTigo.</div>
     </div>
 
     <div class="faq-item">
-      <button class="question">5. How long does it take to receive the data?</button>
+      <button class="question"><i class="fas fa-clock"></i> How long does it take to receive the data?</button>
       <div class="answer">Most purchases are instant, but it may take up to 5 minutes during network delays.</div>
     </div>
 
     <div class="faq-item">
-      <button class="question">6. Can I buy data for someone else?</button>
+      <button class="question"><i class="fas fa-user-friends"></i> Can I buy data for someone else?</button>
       <div class="answer">Yes. Just enter the recipient’s mobile number when buying.</div>
     </div>
 
     <div class="faq-item">
-      <button class="question">7. What if I enter the wrong number?</button>
+      <button class="question"><i class="fas fa-exclamation-triangle"></i> What if I enter the wrong number?</button>
       <div class="answer">Please check carefully before confirming. We’re not responsible for incorrect numbers.</div>
     </div>
 
     <div class="faq-item">
-      <button class="question">8. Is Paystack secure?</button>
+      <button class="question"><i class="fas fa-lock"></i> Is Paystack secure?</button>
       <div class="answer">Yes, Paystack uses advanced security protocols to protect your payments.</div>
     </div>
 
     <div class="faq-item">
-      <button class="question">9. Is there a minimum amount I can top up?</button>
+      <button class="question"><i class="fas fa-coins"></i> Is there a minimum amount I can top up?</button>
       <div class="answer">Yes, the minimum top-up amount is 5 GHS.</div>
     </div>
 
     <div class="faq-item">
-      <button class="question">10. Who do I contact for support?</button>
+      <button class="question"><i class="fas fa-headset"></i> Who do I contact for support?</button>
       <div class="answer">Email us at <a href="mailto:support@yourdomain.com">support@yourdomain.com</a> or use our Contact page.</div>
     </div>
 
@@ -102,9 +101,10 @@
       btn.addEventListener('click', () => {
         btn.classList.toggle('active');
         const answer = btn.nextElementSibling;
-        answer.style.display = answer.style.display === 'block' ? 'none' : 'block';
+        answer.style.maxHeight = answer.style.maxHeight ? null : answer.scrollHeight + "px";
       });
     });
+
     function openNav() {
       document.getElementById("mobileNav").style.width = "100%";
     }

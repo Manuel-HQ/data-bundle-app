@@ -11,58 +11,70 @@
   <header class="site-header">
     <div class="logo">📶 Manuel Data</div>
     <nav class="nav">
-  <a href="{{ url_for('dashboard') }}">Home</a>
-  <a href="{{ url_for('purchase') }}">Buy Data</a>
-  <a href="{{ url_for('profile') }}">Profile</a>
-  <a href="{{ url_for('wallet') }}">Wallet</a>
-  <a href="{{ url_for('faq') }}">FAQ</a>
-
-  <a href="{{ url_for('contact') }}">Contact</a>
-  <a href="{{ url_for('logout') }}" class="login-btn">Logout</a>
-</nav>
-<div class="hamburger" onclick="openNav()">☰</div>
-
+      <a href="{{ url_for('dashboard') }}">🏠 Home</a>
+      <a href="{{ url_for('purchase') }}">💳 Buy Data</a>
+      <a href="{{ url_for('profile') }}">👤 Profile</a>
+      <a href="{{ url_for('wallet') }}">💰 Wallet</a>
+      <a href="{{ url_for('faq') }}">❓ FAQ</a>
+      <a href="{{ url_for('contact') }}">📞 Contact</a>
+      <a href="{{ url_for('logout') }}" class="login-btn">🚪 Logout</a>
+    </nav>
+    <div class="hamburger" onclick="openNav()">☰</div>
   </header>
-    <div id="mobileNav" class="overlay-nav">
+
+  <!-- Mobile Nav -->
+  <div id="mobileNav" class="overlay-nav">
     <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
     <div class="overlay-content">
-      <a href="{{ url_for('dashboard') }}">Home</a>
-  <a href="{{ url_for('purchase') }}">Buy Data</a>
-  <a href="{{ url_for('profile') }}">Profile</a>
-  <a href="{{ url_for('wallet') }}">Wallet</a>
-  <a href="{{ url_for('faq') }}">FAQ</a>
-
-  <a href="{{ url_for('contact') }}">Contact</a>
-  <a href="{{ url_for('logout') }}" class="login-btn">Logout</a>
+      <a href="{{ url_for('dashboard') }}">🏠 Home</a>
+      <a href="{{ url_for('purchase') }}">💳 Buy Data</a>
+      <a href="{{ url_for('profile') }}">👤 Profile</a>
+      <a href="{{ url_for('wallet') }}">💰 Wallet</a>
+      <a href="{{ url_for('faq') }}">❓ FAQ</a>
+      <a href="{{ url_for('contact') }}">📞 Contact</a>
+      <a href="{{ url_for('logout') }}" class="login-btn">🚪 Logout</a>
     </div>
   </div>
-  <div class="wallet-container">
-    <h2>Wallet Balance: GHS {{ '%.2f' | format(user['wallet_balance']) }}</h2>
 
-    <!-- FIXED: Send to initiate_payment -->
-    <form id="topUpForm" method="POST" action="{{ url_for('initiate_payment') }}">
-      <input type="number" name="amount" id="amount" placeholder="Amount to top-up" step="0.01" required>
-      <select name="provider" id="provider" required>
-        <option value="">Select Provider</option>
-        <option value="MTN">MTN</option>
-        <option value="Vodafone">Vodafone</option>
-        <option value="AirtelTigo">AirtelTigo</option>
-      </select>
-      <input type="text" name="number" id="number" placeholder="Mobile Number" required>
-      <button type="button" onclick="showConfirmation()">Top Up</button>
+  <!-- Wallet Section -->
+  <div class="wallet-container">
+    <h2>💰 Wallet Balance: <span>GHS {{ '%.2f' | format(user['wallet_balance']) }}</span></h2>
+
+    <form id="topUpForm" method="POST" action="{{ url_for('initiate_payment') }}" class="wallet-form">
+      <div class="form-group">
+        <label for="amount">💵 Amount</label>
+        <input type="number" name="amount" id="amount" placeholder="Enter amount" step="0.01" required>
+      </div>
+
+      <div class="form-group">
+        <label for="provider">📡 Provider</label>
+        <select name="provider" id="provider" required>
+          <option value="">-- Select Provider --</option>
+          <option value="MTN">MTN</option>
+          <option value="Vodafone">Vodafone</option>
+          <option value="AirtelTigo">AirtelTigo</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="number">📱 Mobile Number</label>
+        <input type="text" name="number" id="number" placeholder="e.g. 0551234567" required>
+      </div>
+
+      <button type="button" class="btn-primary" onclick="showConfirmation()">⚡ Top Up</button>
     </form>
 
-    <a href="{{ url_for('dashboard') }}">← Back to Dashboard</a>
+    <a href="{{ url_for('dashboard') }}" class="back-link">← Back to Dashboard</a>
   </div>
 
   <!-- Modal -->
   <div id="confirmationModal" class="modal">
     <div class="modal-content">
-      <h3>Confirm Top-Up</h3>
+      <h3>🔔 Confirm Top-Up</h3>
       <p id="confirmText"></p>
       <div class="modal-buttons">
-        <button onclick="submitForm()">Confirm</button>
-        <button onclick="closeModal()">Cancel</button>
+        <button onclick="submitForm()" class="btn-primary">✅ Confirm</button>
+        <button onclick="closeModal()" class="btn-ghost">❌ Cancel</button>
       </div>
     </div>
   </div>
@@ -74,13 +86,13 @@
       const number = document.getElementById('number').value;
 
       if (!amount || !provider || !number) {
-        alert("Please fill out all fields.");
+        alert("⚠️ Please fill out all fields.");
         return;
       }
 
-      const confirmText = `Amount: GHS ${amount}<br>Provider: ${provider}<br>Mobile Number: ${number}`;
+      const confirmText = `💵 Amount: GHS ${amount}<br>📡 Provider: ${provider}<br>📱 Number: ${number}`;
       document.getElementById('confirmText').innerHTML = confirmText;
-      document.getElementById('confirmationModal').style.display = 'block';
+      document.getElementById('confirmationModal').style.display = 'flex';
     }
 
     function closeModal() {
@@ -90,6 +102,7 @@
     function submitForm() {
       document.getElementById('topUpForm').submit();
     }
+
     function openNav() {
       document.getElementById("mobileNav").style.width = "100%";
     }

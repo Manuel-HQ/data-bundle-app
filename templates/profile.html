@@ -3,109 +3,115 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>User Profile</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='profile.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='header.css') }}">
+  <title>User Profile | Manuel Data</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='profile.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='header.css') }}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
-    <header class="site-header">
+  <!-- Header -->
+  <header class="site-header">
     <div class="logo">📶 Manuel Data</div>
     <nav class="nav">
-  <a href="{{ url_for('dashboard') }}">Home</a>
-  <a href="{{ url_for('purchase') }}">Buy Data</a>
-  <a href="{{ url_for('profile') }}">Profile</a>
-  <a href="{{ url_for('wallet') }}">Wallet</a>
-  <a href="{{ url_for('faq') }}">FAQ</a>
-
-  <a href="{{ url_for('contact') }}">Contact</a>
-  <a href="{{ url_for('logout') }}" class="login-btn">Logout</a>
-</nav>
-<div class="hamburger" onclick="openNav()">☰</div>
-
+     <a href="{{ url_for('dashboard') }}">🏠 Home</a>
+      <a href="{{ url_for('purchase') }}">💳 Buy Data</a>
+      <a href="{{ url_for('profile') }}">👤 Profile</a>
+      <a href="{{ url_for('wallet') }}">💰 Wallet</a>
+      <a href="{{ url_for('faq') }}">❓ FAQ</a>
+      <a href="{{ url_for('contact') }}">📞 Contact</a>
+      <a href="{{ url_for('logout') }}" class="login-btn">🚪 Logout</a>
+    </nav>
+    <div class="hamburger" onclick="openNav()"><i class="fa-solid fa-bars"></i></div>
   </header>
-    <div id="mobileNav" class="overlay-nav">
+
+  <!-- Mobile Navigation -->
+  <div id="mobileNav" class="overlay-nav">
     <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
     <div class="overlay-content">
-      <a href="{{ url_for('dashboard') }}">Home</a>
-  <a href="{{ url_for('purchase') }}">Buy Data</a>
-  <a href="{{ url_for('profile') }}">Profile</a>
-  <a href="{{ url_for('wallet') }}">Wallet</a>
-  <a href="{{ url_for('faq') }}">FAQ</a>
-
-  <a href="{{ url_for('contact') }}">Contact</a>
-  <a href="{{ url_for('logout') }}" class="login-btn">Logout</a>
+      <a href="{{ url_for('dashboard') }}"><i class="fa-solid fa-house"></i> Home</a>
+      <a href="{{ url_for('purchase') }}"><i class="fa-solid fa-cart-shopping"></i> Buy Data</a>
+      <a href="{{ url_for('profile') }}"><i class="fa-solid fa-user"></i> Profile</a>
+      <a href="{{ url_for('wallet') }}"><i class="fa-solid fa-wallet"></i> Wallet</a>
+      <a href="{{ url_for('faq') }}"><i class="fa-solid fa-circle-question"></i> FAQ</a>
+      <a href="{{ url_for('contact') }}"><i class="fa-solid fa-envelope"></i> Contact</a>
+      <a href="{{ url_for('logout') }}" class="login-btn"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
     </div>
   </div>
-    <div class="profile-container">
-        <h1>Welcome, {{ user['username'] }}!</h1>
 
-        {% if message %}
-            <div class="success-message">{{ message }}</div>
+  <!-- Profile Container -->
+  <div class="profile-container">
+    <h1><i class="fa-solid fa-user-circle"></i> Welcome, {{ user['username'] }}!</h1>
+
+    {% if message %}
+      <div class="success-message"><i class="fa-solid fa-circle-check"></i> {{ message }}</div>
+    {% endif %}
+    {% if error %}
+      <div class="error-message"><i class="fa-solid fa-triangle-exclamation"></i> {{ error }}</div>
+    {% endif %}
+
+    <!-- Profile Form -->
+    <form method="POST" action="{{ url_for('profile') }}" enctype="multipart/form-data" class="profile-form">
+      <div class="form-group">
+        <label><i class="fa-solid fa-user"></i> Username</label>
+        <input type="text" name="username" value="{{ user['username'] }}" required>
+      </div>
+
+      <div class="form-group">
+        <label><i class="fa-solid fa-envelope"></i> Email</label>
+        <input type="email" name="email" value="{{ user['email'] }}" required>
+      </div>
+
+      <div class="form-group">
+        <label><i class="fa-solid fa-phone"></i> Mobile</label>
+        <input type="tel" name="mobile" value="{{ user['mobile'] }}" required>
+      </div>
+
+      <div class="form-group">
+        <label><i class="fa-solid fa-venus-mars"></i> Gender</label>
+        <select name="gender" required>
+          <option value="Male" {% if user['gender'] == 'Male' %}selected{% endif %}>Male</option>
+          <option value="Female" {% if user['gender'] == 'Female' %}selected{% endif %}>Female</option>
+          <option value="Other" {% if user['gender'] == 'Other' %}selected{% endif %}>Other</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label><i class="fa-solid fa-lock"></i> New Password (optional)</label>
+        <input type="password" name="password">
+      </div>
+
+      <div class="form-group">
+        <label><i class="fa-solid fa-lock"></i> Confirm Password</label>
+        <input type="password" name="confirm_password">
+      </div>
+
+      <div class="form-group">
+        <label><i class="fa-solid fa-image"></i> Profile Picture</label>
+        {% if user.get('profile_pic') %}
+          <img src="{{ url_for('static', filename='uploads/' + user['profile_pic']) }}" alt="Profile Picture" width="100" class="profile-pic-preview">
         {% endif %}
-        {% if error %}
-            <div class="error-message">{{ error }}</div>
-        {% endif %}
+        <input type="file" name="profile_pic">
+      </div>
 
-        <form method="POST" action="{{ url_for('profile') }}" enctype="multipart/form-data">
-            <div class="form-group">
-                <label>Username:</label>
-                <input type="text" name="username" value="{{ user['username'] }}" required>
-            </div>
+      <button type="submit" class="save-btn"><i class="fa-solid fa-floppy-disk"></i> Save Changes</button>
+    </form>
 
-            <div class="form-group">
-                <label>Email:</label>
-                <input type="email" name="email" value="{{ user['email'] }}" required>
-            </div>
+    <!-- Delete Account -->
+    <form method="POST" action="{{ url_for('delete_account') }}" onsubmit="return confirm('Are you sure you want to delete your account? This cannot be undone.');">
+      <button type="submit" class="delete-btn"><i class="fa-solid fa-trash"></i> Delete Account</button>
+    </form>
 
-            <div class="form-group">
-                <label>Mobile:</label>
-                <input type="tel" name="mobile" value="{{ user['mobile'] }}" required>
-            </div>
-
-            <div class="form-group">
-                <label>Gender:</label>
-                <select name="gender" required>
-                    <option value="Male" {% if user['gender'] == 'Male' %}selected{% endif %}>Male</option>
-                    <option value="Female" {% if user['gender'] == 'Female' %}selected{% endif %}>Female</option>
-                    <option value="Other" {% if user['gender'] == 'Other' %}selected{% endif %}>Other</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label>New Password (optional):</label>
-                <input type="password" name="password">
-            </div>
-
-            <div class="form-group">
-                <label>Confirm Password:</label>
-                <input type="password" name="confirm_password">
-            </div>
-
-            <div class="form-group">
-                <label>Profile Picture:</label>
-                {% if user.get('profile_pic') %}
-                    <img src="{{ url_for('static', filename='uploads/' + user['profile_pic']) }}" alt="Profile Picture" width="100">
-                {% endif %}
-                <input type="file" name="profile_pic">
-            </div>
-
-            <input type="submit" value="Save Changes">
-        </form>
-        <form method="POST" action="{{ url_for('delete_account') }}" onsubmit="return confirm('Are you sure you want to delete your account? This cannot be undone.');">
-    <button type="submit" class="delete-btn">Delete Account</button>
-</form>
-
-
-        <div class="back-link">
-            <a href="{{ url_for('dashboard') }}">← Back to Dashboard</a>
-        </div>
+    <!-- Back link -->
+    <div class="back-link">
+      <a href="{{ url_for('dashboard') }}"><i class="fa-solid fa-arrow-left"></i> Back to Dashboard</a>
     </div>
+  </div>
 
+  <!-- Scripts -->
   <script>
     function openNav() {
       document.getElementById("mobileNav").style.width = "100%";
     }
-
     function closeNav() {
       document.getElementById("mobileNav").style.width = "0%";
     }

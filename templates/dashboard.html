@@ -5,94 +5,97 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard | Manuel Data</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='dashboard.css') }}">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
+  <!-- Header / Navbar -->
   <header class="site-header">
-    <div class="logo">📶 Manuel Data</div>
+    <div class="logo"><i class="fas fa-wifi"></i> Manuel Data</div>
     <nav class="nav">
-  <a href="{{ url_for('dashboard') }}">Home</a>
-  <a href="{{ url_for('purchase') }}">Buy Data</a>
-  <a href="{{ url_for('profile') }}">Profile</a>
-  <a href="{{ url_for('wallet') }}">Wallet</a>
-  <a href="{{ url_for('faq') }}">FAQ</a>
-
-  <a href="{{ url_for('contact') }}">Contact</a>
-  <a href="{{ url_for('logout') }}" class="login-btn">Logout</a>
-</nav>
-<div class="hamburger" onclick="openNav()">☰</div>
-
+      <a href="{{ url_for('dashboard') }}">🏠 Home</a>
+      <a href="{{ url_for('purchase') }}">💳 Buy Data</a>
+      <a href="{{ url_for('profile') }}">👤 Profile</a>
+      <a href="{{ url_for('wallet') }}">💰 Wallet</a>
+      <a href="{{ url_for('faq') }}">❓ FAQ</a>
+      <a href="{{ url_for('contact') }}">📞 Contact</a>
+      <a href="{{ url_for('logout') }}" class="login-btn">🚪 Logout</a>
+    </nav>
+    <div class="hamburger" onclick="openNav()"><i class="fas fa-bars"></i></div>
   </header>
 
+  <!-- Mobile Overlay Nav -->
   <div id="mobileNav" class="overlay-nav">
     <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
     <div class="overlay-content">
-     <a href="{{ url_for('dashboard') }}">Home</a>
-  <a href="{{ url_for('purchase') }}">Buy Data</a>
-  <a href="{{ url_for('profile') }}">Profile</a>
-  <a href="{{ url_for('wallet') }}">Wallet</a>
-  <a href="{{ url_for('faq') }}">FAQ</a>
-
-  <a href="{{ url_for('contact') }}">Contact</a>
-  <a href="{{ url_for('logout') }}" class="login-btn">Logout</a>
+      <a href="{{ url_for('dashboard') }}"><i class="fas fa-home"></i> Home</a>
+      <a href="{{ url_for('purchase') }}"><i class="fas fa-shopping-cart"></i> Buy Data</a>
+      <a href="{{ url_for('profile') }}"><i class="fas fa-user"></i> Profile</a>
+      <a href="{{ url_for('wallet') }}"><i class="fas fa-wallet"></i> Wallet</a>
+      <a href="{{ url_for('faq') }}"><i class="fas fa-question-circle"></i> FAQ</a>
+      <a href="{{ url_for('contact') }}"><i class="fas fa-envelope"></i> Contact</a>
+      <a href="{{ url_for('logout') }}" class="login-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
     </div>
   </div>
 
+  <!-- Hero -->
   <section class="hero">
     <h1>Welcome {{ username }} 👋</h1>
-    <div style="background:#111; padding:10px 15px; border-radius:10px; box-shadow:0 0 5px #0ff;">
-  <p style="color:#0ff; font-size:18px;"><strong>Wallet Balance:</strong> GHS {{ '%.2f' | format(balance) }}</p>
-</div>
-
+    <div class="wallet-card">
+      <p><i class="fas fa-wallet"></i> <strong>Wallet Balance:</strong> GHS {{ '%.2f' | format(balance) }}</p>
+    </div>
     <p>Your one-stop platform for instant & affordable data bundles in Ghana.</p>
-    <a href="{{ url_for('purchase') }}" class="cta-btn">Buy Data Now</a>
+    <a href="{{ url_for('purchase') }}" class="cta-btn"><i class="fas fa-bolt"></i> Buy Data Now</a>
   </section>
 
-  <!-- Additional dashboard content can go below -->
-    <div class="content">
-    <h2>📊 Your Purchases</h2>
+  <!-- Content -->
+  <div class="content">
+    <h2><i class="fas fa-chart-line"></i> Your Purchases</h2>
 
-  <div class="filter-section">
-    <label for="statusFilter">Filter by Status:</label>
-    <select id="statusFilter">
-      <option value="all">All</option>
-      <option value="request_created">Request Created</option>
-      <option value="payment_completed">Payment Completed</option>
-      <option value="credited">Credited</option>
-    </select>
+    <div class="filter-section">
+      <label for="statusFilter"><i class="fas fa-filter"></i> Filter by Status:</label>
+      <select id="statusFilter">
+        <option value="all">All</option>
+        <option value="request_created">Request Created</option>
+        <option value="payment_completed">Payment Completed</option>
+        <option value="credited">Credited</option>
+      </select>
+    </div>
+
+    <table id="purchasesTable">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Amount</th>
+          <th>Provider</th>
+          <th>Number</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for p in purchases %}
+        <tr data-status="{{ p['status'] }}">
+          <td>{{ p['created_at'] }}</td>
+          <td>₵{{ p['amount'] }}</td>
+          <td>{{ p['provider'] }}</td>
+          <td>{{ p['number'] }}</td>
+          <td>
+            {% if p['status'] == 'request_created' %}
+              <span class="badge request"><i class="fas fa-hourglass-half"></i> Request</span>
+            {% elif p['status'] == 'payment_completed' %}
+              <span class="badge paid"><i class="fas fa-credit-card"></i> Paid</span>
+            {% elif p['status'] == 'credited' %}
+              <span class="badge credited"><i class="fas fa-check-circle"></i> Credited</span>
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
   </div>
 
-  <table id="purchasesTable">
-    <thead>
-      <tr>
-        <th>Date</th>
-        <th>Amount</th>
-        <th>Provider</th>
-        <th>Number</th>
-        <th>Status</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for p in purchases %}
-      <tr data-status="{{ p['status'] }}">
-        <td>{{ p['created_at'] }}</td>
-        <td>₵{{ p['amount'] }}</td>
-        <td>{{ p['provider'] }}</td>
-        <td>{{ p['number'] }}</td>
-        <td>
-          {% if p['status'] == 'request_created' %}
-            <span class="badge request">🟡 Request</span>
-          {% elif p['status'] == 'payment_completed' %}
-            <span class="badge paid">🔵 Paid</span>
-          {% elif p['status'] == 'credited' %}
-            <span class="badge credited">✅ Credited</span>
-          {% endif %}
-        </td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-  </div>
-<script>
+  <!-- JS -->
+  <script>
     function openNav() {
       document.getElementById("mobileNav").style.width = "100%";
     }
@@ -101,7 +104,7 @@
       document.getElementById("mobileNav").style.width = "0%";
     }
 
-     const filterSelect = document.getElementById("statusFilter");
+    const filterSelect = document.getElementById("statusFilter");
     const rows = document.querySelectorAll("#purchasesTable tbody tr");
 
     filterSelect.addEventListener("change", () => {

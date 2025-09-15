@@ -13,8 +13,7 @@ app.secret_key = "your_secret_key_here"
 UPLOAD_FOLDER = 'static/uploads'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 
-app = Flask(__name__)
-app.secret_key = 'your_secret_key_here'
+
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 PAYSTACK_SECRET_KEY = "sk_test_07157d2784524701ce709d7526e40311caaa38c6"   # Replace with your real secret key
@@ -214,6 +213,10 @@ def purchase():
 @app.route('/faq')
 def faq():
     return render_template('FAQ.html')
+
+@app.route('/landing')
+def landing():
+    return render_template('landing.html')
 @app.route('/contact')
 def contact():
     return render_template('contact.html')
@@ -422,7 +425,7 @@ def delete_account():
 @app.route('/logout')
 def logout():
     session.clear()
-    return redirect(url_for('login'))
+    return redirect(url_for('landing'))
 
 
 # -------- LIGHTWEIGHT API (optional for frontend use) --------
