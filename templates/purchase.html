@@ -105,85 +105,140 @@
 
     <!-- ✅ Scripts -->
   <script>
-    const bundleOptions = {
-      MTN: ["1 GB - 5.40 GHS", "2 GB - 10.50 GHS", "3 GB - 14.50 GHS", "4 GB - 19.50 GHS",
-            "5 GB - 24.70 GHS", "6 GB - 29.70 GHS", "8 GB - 37.00 GHS", "10 GB - 47.50 GHS",
-            "15 GB - 68.50 GHS", "20 GB - 88.00 GHS", "25 GB - 113.00 GHS", "30 GB - 131.00 GHS",
-            "40 GB - 168.00 GHS", "50 GB - 197.00 GHS"],
-      Vodafone: ["1 GB - 4.90 GHS", "2 GB - 9.50 GHS", "3 GB - 13.00 GHS", "4 GB - 17.50 GHS",
-            "5 GB - 22.00 GHS", "6 GB - 26.00 GHS", "8 GB - 34.00 GHS", "10 GB - 44.00 GHS",
-            "15 GB - 64.00 GHS", "20 GB - 84.00 GHS", "25 GB - 108.00 GHS", "30 GB - 126.00 GHS",
-            "40 GB - 160.00 GHS", "50 GB - 190.00 GHS"],
-      AirtelTigo: ["1 GB - 5.00 GHS", "2 GB - 10.00 GHS", "3 GB - 14.00 GHS", "4 GB - 19.00 GHS",
-            "5 GB - 24.00 GHS", "6 GB - 28.00 GHS", "8 GB - 36.00 GHS", "10 GB - 46.00 GHS",
-            "15 GB - 67.00 GHS", "20 GB - 86.00 GHS", "25 GB - 110.00 GHS", "30 GB - 128.00 GHS",
-            "40 GB - 165.00 GHS", "50 GB - 194.00 GHS"]
-    };
+  const bundleOptions = {
+    MTN: [
+      "1 GB - 5.40 GHS",
+      "2 GB - 10.50 GHS",
+      "3 GB - 14.50 GHS",
+      "4 GB - 19.50 GHS",
+      "5 GB - 24.70 GHS",
+      "6 GB - 29.70 GHS",
+      "8 GB - 37.00 GHS",
+      "10 GB - 47.50 GHS",
+      "15 GB - 68.50 GHS",
+      "20 GB - 88.00 GHS",
+      "25 GB - 113.00 GHS",
+      "30 GB - 131.00 GHS",
+      "40 GB - 168.00 GHS",
+      "50 GB - 197.00 GHS"
+    ],
+    Vodafone: [
+      "1 GB - 4.90 GHS",
+      "2 GB - 9.50 GHS",
+      "3 GB - 13.00 GHS",
+      "4 GB - 17.50 GHS",
+      "5 GB - 22.00 GHS",
+      "6 GB - 26.00 GHS",
+      "8 GB - 34.00 GHS",
+      "10 GB - 44.00 GHS",
+      "15 GB - 64.00 GHS",
+      "20 GB - 84.00 GHS",
+      "25 GB - 108.00 GHS",
+      "30 GB - 126.00 GHS",
+      "40 GB - 160.00 GHS",
+      "50 GB - 190.00 GHS"
+    ],
+    AirtelTigo: [
+      "1 GB - 5.00 GHS",
+      "2 GB - 10.00 GHS",
+      "3 GB - 14.00 GHS",
+      "4 GB - 19.00 GHS",
+      "5 GB - 24.00 GHS",
+      "6 GB - 28.00 GHS",
+      "8 GB - 36.00 GHS",
+      "10 GB - 46.00 GHS",
+      "15 GB - 67.00 GHS",
+      "20 GB - 86.00 GHS",
+      "25 GB - 110.00 GHS",
+      "30 GB - 128.00 GHS",
+      "40 GB - 165.00 GHS",
+      "50 GB - 194.00 GHS"
+    ]
+  };
 
-    const WALLET_BALANCE = Number('{{ balance | default(0.0) }}');
+  const WALLET_BALANCE = Number('{{ balance | default(0.0) }}');
 
-    function updateBundles() {
-      const network = document.getElementById('network').value;
-      const bundleSelect = document.getElementById('bundle');
-      bundleSelect.innerHTML = '<option value="" disabled selected>-- Select Bundle --</option>';
-      if (bundleOptions[network]) {
-        bundleOptions[network].forEach(bundle => {
-          const option = document.createElement('option');
-          option.value = bundle;
-          option.textContent = bundle;
-          bundleSelect.appendChild(option);
-        });
-      }
+  function updateBundles() {
+    const network = document.getElementById('network').value;
+    const bundleSelect = document.getElementById('bundle');
+    bundleSelect.innerHTML = '<option value="" disabled selected>-- Select Bundle --</option>';
+
+    if (bundleOptions[network]) {
+      bundleOptions[network].forEach(bundle => {
+        const option = document.createElement('option');
+        option.value = bundle;
+        option.textContent = bundle;
+        bundleSelect.appendChild(option);
+      });
+    }
+  }
+
+  function parsePriceGHS(bundleStr) {
+    const match = bundleStr.match(/-\s*([\d.]+)\s*GHS/i);
+    return match ? parseFloat(match[1]) : 0;
+  }
+
+  function showConfirmation() {
+    const network = document.getElementById('network').value;
+    const bundle = document.getElementById('bundle').value;
+    const mobile = document.getElementById('mobile').value;
+
+    if (!network || !bundle || !mobile) {
+      alert("Please fill out all fields before continuing.");
+      return;
     }
 
-    function parsePriceGHS(bundleStr) {
-      const match = bundleStr.match(/-\s*([\d.]+)\s*GHS/i);
-      return match ? parseFloat(match[1]) : 0;
+    const price = parsePriceGHS(bundle);
+    document.getElementById('price').value = price;
+
+    // Insufficient funds check
+    if (price > WALLET_BALANCE) {
+      document.getElementById('insufficientDetails').innerHTML =
+        `You are trying to buy <strong>${bundle}</strong> for 
+        <strong>${price.toFixed(2)} GHS</strong> but your current wallet balance is 
+        <strong>${WALLET_BALANCE.toFixed(2)} GHS</strong>.`;
+
+      openModal('insufficientModal');
+      return;
     }
 
-    function showConfirmation() {
-      const network = document.getElementById('network').value;
-      const bundle = document.getElementById('bundle').value;
-      const mobile = document.getElementById('mobile').value;
-      if (!network || !bundle || !mobile) {
-        alert("Please fill out all fields before continuing.");
-        return;
-      }
-      const price = parsePriceGHS(bundle);
-      document.getElementById('price').value = price;
+    const details = `
+      <strong>Network:</strong> ${network}<br>
+      <strong>Bundle:</strong> ${bundle}<br>
+      <strong>Recipient:</strong> ${mobile}<br>
+      <strong>Price:</strong> ${price.toFixed(2)} GHS
+    `;
+    document.getElementById('confirmationDetails').innerHTML = details;
 
-      if (price > WALLET_BALANCE) {
-        document.getElementById('insufficientDetails').innerHTML =
-          `You are trying to buy <strong>${bundle}</strong> for <strong>${price.toFixed(2)} GHS</strong> but your current wallet balance is <strong>${WALLET_BALANCE.toFixed(2)} GHS</strong>.`;
-        openModal('insufficientModal');
-        return;
-      }
+    openModal('confirmationModal');
+  }
 
-      document.getElementById('confirmationDetails').innerHTML =
-        `<strong>Network:</strong> ${network}<br>
-         <strong>Bundle:</strong> ${bundle}<br>
-         <strong>Recipient:</strong> ${mobile}<br>
-         <strong>Price:</strong> ${price.toFixed(2)} GHS`;
-      openModal('confirmationModal');
-    }
+  function openModal(id) {
+    document.getElementById(id).style.display = 'flex';
+  }
 
-    function openModal(id) { document.getElementById(id).style.display = 'flex'; }
-    function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+  function closeModal(id) {
+    document.getElementById(id).style.display = 'none';
+  }
 
-    function submitPurchase() {
-      const form = document.getElementById('purchaseForm');
-      const fd = new FormData(form);
+  function submitPurchase() {
+    const form = document.getElementById('purchaseForm');
+    const fd = new FormData(form);
 
-      fetch("{{ url_for('purchase') }}", {
-        method: 'POST',
-        body: fd,
-        headers: { 'X-Requested-With': 'fetch' }
-      })
+    fetch("{{ url_for('purchase') }}", {
+      method: 'POST',
+      body: fd,
+      headers: { 'X-Requested-With': 'fetch' }
+    })
       .then(async (res) => {
         if (!res.ok) {
           const data = await res.json().catch(() => ({ error: 'Purchase failed' }));
           closeModal('confirmationModal');
-          alert(data.error || 'Purchase failed');
+
+          const alert = document.getElementById('insufficientAlert');
+          alert.textContent = data.error || 'Purchase failed';
+          alert.style.display = 'block';
+
           if (data.balance !== undefined) {
             document.getElementById('insufficientDetails').innerHTML =
               `Your balance is <strong>${Number(data.balance).toFixed(2)} GHS</strong>.`;
@@ -191,16 +246,25 @@
           }
           return;
         }
+
+        // Success
         window.location.href = "{{ url_for('dashboard') }}";
       })
       .catch(() => {
         closeModal('confirmationModal');
         alert('Network error. Please try again.');
       });
-    }
+  }
 
-    function openNav() { document.getElementById("mobileNav").style.width = "100%"; }
-    function closeNav() { document.getElementById("mobileNav").style.width = "0%"; }
-  </script>
+  function openNav() {
+    document.getElementById("mobileNav").style.width = "100%";
+  }
+
+  function closeNav() {
+    document.getElementById("mobileNav").style.width = "0%";
+  }
+</script>
+
+
 </body>
 </html>

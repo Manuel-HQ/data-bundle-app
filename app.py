@@ -1,3 +1,17 @@
+"""
+Flask Web Application for Data Bundle Sales Platform
+====================================================
+
+This application manages:
+- User registration, login, and profiles
+- Wallet top-up using Paystack integration
+- Data bundle purchases with wallet deductions
+- Admin purchase confirmation
+- JSON-based persistent storage for users and purchases
+
+Author: Emmanuel
+"""
+
 from flask import Flask, render_template, request, redirect, session, url_for, jsonify
 import json
 import os
@@ -5,29 +19,32 @@ import requests
 from datetime import datetime
 from werkzeug.utils import secure_filename
 
+# ---------------- APP CONFIGURATION ----------------
 app = Flask(__name__)
-app.secret_key = "your_secret_key_here"
+app.secret_key = "MYSPECIALDATAAPPSECREATKEY"  # Replace with environment variable in production
 
-
-# ---------------- CONFIG ----------------
 UPLOAD_FOLDER = 'static/uploads'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
-
-
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-PAYSTACK_SECRET_KEY = "sk_test_07157d2784524701ce709d7526e40311caaa38c6"   # Replace with your real secret key
-PAYSTACK_PUBLIC_KEY = "pk_test_5dba95da4545041b0211cab413af0c955f71354f"   # Replace with your real public key
+# Paystack credentials (should be stored securely in environment variables)
+PAYSTACK_SECRET_KEY = "sk_test_07157d2784524701ce709d7526e40311caaa38c6"
+PAYSTACK_PUBLIC_KEY = "pk_test_5dba95da4545041b0211cab413af0c955f71354f"
 
+# JSON data storage files
 USERS_FILE = 'users.json'
 PURCHASES_FILE = 'purchases.json'
 PENDING_FILE = 'pending_payments.json'
-# ---------------- UTILITIES ----------------
+
+
+# ---------------- HELPER FUNCTIONS ----------------
 def allowed_file(filename):
+    """Check if uploaded file has a valid extension."""
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
 def _read_json(path, default):
+    """Read JSON data from a file safely, returning default if file does not exist or is invalid."""
     if not os.path.exists(path):
         return default
     try:
@@ -38,50 +55,63 @@ def _read_json(path, default):
 
 
 def _write_json(path, data):
+    """Write JSON data to a file with indentation for readability."""
     with open(path, 'w') as f:
         json.dump(data, f, indent=4)
 
 
 def load_users():
+    """Load all users from the JSON file."""
     data = _read_json(USERS_FILE, [])
     return data if isinstance(data, list) else []
 
 
 def save_users(users):
+    """Save the list of users to the JSON file."""
     _write_json(USERS_FILE, users)
 
 
 def load_purchases():
+    """Load all purchases from the JSON file."""
     data = _read_json(PURCHASES_FILE, [])
     return data if isinstance(data, list) else []
 
 
 def save_purchases(purchases):
+    """Save the list of purchases to the JSON file."""
     _write_json(PURCHASES_FILE, purchases)
 
 
+def load_pending():
+    """Load pending wallet top-up payments from JSON file."""
+    return _read_json(PENDING_FILE, [])
+
+
+def save_pending(pending):
+    """Save pending wallet top-up payments to JSON file."""
+    _write_json(PENDING_FILE, pending)
+
+
 def now_str():
+    """Return the current datetime as a formatted string."""
     return datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
 
 def next_purchase_id(purchases):
-    # Simple incremental ID for admin actions
+    """Generate the next purchase ID by incrementing the maximum existing ID."""
     return (max([p.get('id', 0) for p in purchases]) + 1) if purchases else 1
 
-def load_pending():
-    return _read_json(PENDING_FILE, [])
-
-def save_pending(pending):
-    _write_json(PENDING_FILE, pending)
 
 # ---------------- ROUTES ----------------
 @app.route('/')
 def home():
+    """Landing page route."""
     return render_template('landing.html', current_year=datetime.now().year)
 
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
+    """Handle user registration with validation and persistence."""
     if request.method == 'POST':
         username = request.form['username']
         email = request.form['email']
@@ -98,6 +128,7 @@ def register():
             if user.get('email') == email:
                 return render_template('register.html', error="Email already registered")
 
+        # Add new user with empty wallet and no transactions
         users.append({
             "username": username,
             "email": email,
@@ -110,11 +141,13 @@ def register():
 
         save_users(users)
         return redirect(url_for('login'))
+
     return render_template('register.html')
 
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    """Authenticate users and create a session."""
     error = None
     if request.method == 'POST':
         email = request.form['email']
@@ -126,27 +159,30 @@ def login():
             session['email'] = user['email']
             session['username'] = user['username']
             return redirect(url_for('dashboard'))
-        else:
-            error = 'Invalid email or password'
+        error = 'Invalid email or password'
 
     return render_template('login.html', error=error)
 
 
 @app.route('/dashboard')
 def dashboard():
+    """Display user dashboard with purchase history and wallet balance."""
     if 'username' in session and 'email' in session:
         all_purchases = load_purchases()
         user_purchases = [p for p in all_purchases if p.get('email') == session['email']]
         users = load_users()
         user = next((u for u in users if u['email'] == session['email']), None)
         balance = user.get('wallet_balance', 0.0) if user else 0.0
-        return render_template('dashboard.html', username=session['username'], purchases=user_purchases, balance=balance)
+        return render_template('dashboard.html',
+                               username=session['username'],
+                               purchases=user_purchases,
+                               balance=balance)
     return redirect(url_for('login'))
 
 
-# -------- PURCHASE FLOW (Request -> Payment -> Admin Credit) --------
 @app.route('/purchase', methods=['GET', 'POST'])
 def purchase():
+    """Handle purchase requests, deduct from wallet, and record transactions."""
     if 'email' not in session:
         return redirect(url_for('login'))
 
@@ -161,14 +197,14 @@ def purchase():
         mobile = request.form['mobile']
         email = session['email']
 
-        # Extract price from string like "1 GB - 5.40 GHS"
+        # Extract price from format like "1 GB - 5.40 GHS"
         try:
             price_str = bundle.split('-')[1].strip().replace("GHS", "").strip()
             amount = float(price_str)
         except (IndexError, ValueError):
             return jsonify({"error": "Invalid bundle format."}), 400
 
-        # SERVER-SIDE GUARD: block if insufficient balance (client checks too)
+        # Prevent purchase if wallet balance is insufficient
         if user.get('wallet_balance', 0.0) < amount:
             return jsonify({
                 "error": "Insufficient wallet balance",
@@ -178,10 +214,10 @@ def purchase():
         purchases = load_purchases()
         pid = next_purchase_id(purchases)
 
-        # Deduct now -> payment completed
+        # Deduct from wallet immediately (payment considered completed)
         user['wallet_balance'] = round(float(user.get('wallet_balance', 0.0)) - amount, 2)
 
-        # Create staged purchase record
+        # Create a new purchase record with staged status tracking
         purchase_record = {
             "id": pid,
             "email": email,
@@ -190,10 +226,10 @@ def purchase():
             "number": mobile,
             "amount": amount,
             "created_at": now_str(),
-            "status": "payment_completed",  # stages: request_created -> payment_completed -> credited
+            "status": "payment_completed",
             "stages": {
-                "request_created": {"done": True,  "at": now_str()},
-                "payment_completed": {"done": True,  "at": now_str()},
+                "request_created": {"done": True, "at": now_str()},
+                "payment_completed": {"done": True, "at": now_str()},
                 "credited": {"done": False, "at": None}
             }
         }
@@ -202,37 +238,50 @@ def purchase():
         save_purchases(purchases)
         save_users(users)
 
-        # If the frontend used fetch, send a JSON ok; if normal form, redirect from JS
+        # If request came from fetch (AJAX), return JSON
         if request.headers.get('X-Requested-With') == 'fetch':
             return jsonify({"ok": True, "id": pid})
         return redirect(url_for('dashboard'))
 
-    # GET
-    return render_template('purchase.html', username=user['username'], balance=user.get('wallet_balance', 0.0))
+    # GET: Show purchase page
+    return render_template('purchase.html',
+                           username=user['username'],
+                           balance=user.get('wallet_balance', 0.0))
+
 
 @app.route('/faq')
 def faq():
+    """FAQ page route."""
     return render_template('FAQ.html')
+
 
 @app.route('/landing')
 def landing():
+    """Landing page route."""
     return render_template('landing.html')
+
+
 @app.route('/contact')
 def contact():
+    """Contact page route."""
     return render_template('contact.html')
 
-# -------- ADMIN --------
+
+# ---------------- ADMIN ----------------
 @app.route('/admin', methods=['GET'])
 def admin_panel():
-    # TODO: Protect this route with proper auth/role check
+    """
+    Admin panel to view all purchases.
+    NOTE: Authentication/authorization should be enforced for security.
+    """
     purchases = load_purchases()
-    # newest first
     purchases_sorted = sorted(purchases, key=lambda p: p.get('id', 0), reverse=True)
     return render_template('admin.html', purchases=purchases_sorted)
 
 
 @app.route('/admin/confirm/<int:pid>', methods=['POST'])
 def admin_confirm(pid):
+    """Admin route to confirm and mark a purchase as credited."""
     purchases = load_purchases()
     found = False
     for p in purchases:
@@ -244,34 +293,37 @@ def admin_confirm(pid):
             p['stages']['credited']['at'] = now_str()
             found = True
             break
+
     if not found:
         return jsonify({"error": "Purchase not found"}), 404
+
     save_purchases(purchases)
-    # If fetch was used
+
     if request.headers.get('X-Requested-With') == 'fetch':
         return jsonify({"ok": True})
     return redirect(url_for('admin_panel'))
 
 
-# -------- WALLET + PAYSTACK INTEGRATION --------
+# ---------------- WALLET & PAYSTACK ----------------
 @app.route('/wallet')
 def wallet():
+    """Wallet page showing balance and Paystack top-up option."""
     email = request.args.get("email") or session.get("email")
     if not email:
         return redirect(url_for("login"))
 
     users = load_users()
     user = next((u for u in users if u['email'] == email), None)
-    
+
     if not user:
         return redirect(url_for('logout'))
 
     return render_template('wallet.html', user=user, paystack_public_key=PAYSTACK_PUBLIC_KEY)
 
 
-
 @app.route('/initiate_payment', methods=['POST'])
 def initiate_payment():
+    """Initialize a Paystack transaction for wallet top-up."""
     if 'email' not in session:
         return redirect(url_for('login'))
 
@@ -283,17 +335,18 @@ def initiate_payment():
     headers = {"Authorization": f"Bearer {PAYSTACK_SECRET_KEY}", "Content-Type": "application/json"}
     data = {
         "email": email,
-        "amount": int(float(amount) * 100),
+        "amount": int(float(amount) * 100),  # Paystack expects amount in kobo/pesewas
         "callback_url": url_for("verify_payment", _external=True)
     }
 
-    response = requests.post("https://api.paystack.co/transaction/initialize", headers=headers, json=data)
+    response = requests.post("https://api.paystack.co/transaction/initialize",
+                             headers=headers, json=data)
     res = response.json()
 
     if res.get("status"):
         reference = res["data"]["reference"]
 
-        # Save this transaction as pending
+        # Save transaction as pending
         pending = load_pending()
         pending.append({
             "email": email,
@@ -306,12 +359,13 @@ def initiate_payment():
         save_pending(pending)
 
         return redirect(res["data"]["authorization_url"])
-    else:
-        return f"Error initializing payment: {res.get('message', 'Unknown error')}"
+
+    return f"Error initializing payment: {res.get('message', 'Unknown error')}"
 
 
 @app.route("/verify_payment")
 def verify_payment():
+    """Verify a Paystack payment and credit the user’s wallet."""
     reference = request.args.get("reference")
     if not reference:
         return "Missing payment reference."
@@ -321,7 +375,6 @@ def verify_payment():
     res = response.json()
 
     if res.get("status") and res.get("data", {}).get("status") == "success":
-        # Load pending payments
         pending = load_pending()
         payment = next((p for p in pending if p["reference"] == reference), None)
 
@@ -333,7 +386,7 @@ def verify_payment():
         if not user:
             return "User not found."
 
-        # Credit wallet
+        # Credit wallet balance
         user["wallet_balance"] = round(float(user.get("wallet_balance", 0)) + payment["amount"], 2)
         user.setdefault("transactions", []).append({
             "amount": payment["amount"],
@@ -344,18 +397,16 @@ def verify_payment():
             "at": now_str()
         })
 
-        # Save updated user
         save_users(users)
-
-        
-
         return redirect(url_for("wallet", email=user["email"]))
-    else:
-        return "Payment verification failed."
 
-# -------- PROFILE --------
+    return "Payment verification failed."
+
+
+# ---------------- PROFILE ----------------
 @app.route('/profile', methods=['GET', 'POST'])
 def profile():
+    """View and update user profile details."""
     if 'email' not in session:
         return redirect(url_for('login'))
 
@@ -378,13 +429,17 @@ def profile():
         if new_email != user['email'] and any(u['email'] == new_email for u in users):
             return render_template('profile.html', user=user, error="This email is already in use")
 
-        user.update({"username": new_username, "email": new_email, "mobile": new_mobile, "gender": new_gender})
+        # Update user details
+        user.update({"username": new_username, "email": new_email,
+                     "mobile": new_mobile, "gender": new_gender})
         if new_password:
             user['password'] = new_password
 
+        # Update session
         session['email'] = new_email
         session['username'] = new_username
 
+        # Handle profile picture upload
         if 'profile_pic' in request.files:
             file = request.files['profile_pic']
             if file and allowed_file(file.filename):
@@ -401,6 +456,7 @@ def profile():
 
 @app.route('/delete_account', methods=['POST'])
 def delete_account():
+    """Delete user account and remove associated profile picture."""
     if 'email' not in session:
         return redirect(url_for('login'))
 
@@ -409,6 +465,7 @@ def delete_account():
     user = next((u for u in users if u['email'] == email), None)
 
     if user:
+        # Remove profile picture if exists
         if 'profile_pic' in user:
             pic_path = os.path.join(app.config['UPLOAD_FOLDER'], user['profile_pic'])
             if os.path.exists(pic_path):
@@ -424,20 +481,23 @@ def delete_account():
 
 @app.route('/logout')
 def logout():
+    """Log out the user and clear the session."""
     session.clear()
     return redirect(url_for('landing'))
 
 
-# -------- LIGHTWEIGHT API (optional for frontend use) --------
+# ---------------- API ENDPOINTS ----------------
 @app.route('/api/wallet_balance')
 def api_wallet_balance():
+    """Return current wallet balance of logged-in user as JSON."""
     if 'email' not in session:
         return jsonify({"balance": 0.0})
+
     users = load_users()
     user = next((u for u in users if u['email'] == session['email']), None)
     return jsonify({"balance": float(user.get('wallet_balance', 0.0)) if user else 0.0})
 
 
-# ---------------- RUN ----------------
+# ---------------- RUN APP ----------------
 if __name__ == '__main__':
     app.run(debug=True)
