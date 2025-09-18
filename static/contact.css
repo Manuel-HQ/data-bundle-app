@@ -1,92 +1,152 @@
-body {
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  background: #f9f9f9;
+/* General Reset */
+* {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", Roboto, sans-serif;
+}
+
+body {
+  background: #f9fafb;
   color: #333;
+  line-height: 1.6;
 }
 
-.contact-container {
-  max-width: 800px;
-  margin: 2rem auto;
-  background: #fff;
-  padding: 2rem;
-  border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+/* Navbar */
+.site-header {
+  background: #1e3a8a;
+  color: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
 }
 
-.contact-container h2 {
-  text-align: center;
-  color: #2c3e50;
-  margin-bottom: 1.5rem;
-  font-size: 1.8rem;
-}
-
-form .form-group {
-  margin-bottom: 1.2rem;
-}
-
-form label {
-  display: block;
+.logo {
+  font-size: 1.5rem;
   font-weight: bold;
-  margin-bottom: 0.5rem;
-  color: #555;
 }
 
-form input, form textarea {
+.nav a {
+  color: #fff;
+  margin-left: 1rem;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.nav a:hover {
+  color: #fbbf24;
+}
+
+.login-btn {
+  background: #fbbf24;
+  color: #1e3a8a !important;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-weight: 600;
+}
+
+.hamburger {
+  font-size: 1.8rem;
+  cursor: pointer;
+  display: none;
+}
+
+/* Overlay Nav for Mobile */
+.overlay-nav {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  top: 0; left: 0;
+  background-color: rgba(30,58,138,0.95);
+  overflow-x: hidden;
+  transition: 0.3s;
+  z-index: 2000;
+}
+
+.overlay-nav .closebtn {
+  position: absolute;
+  top: 15px; right: 30px;
+  font-size: 2rem;
+  color: #fff;
+}
+
+.overlay-content {
+  position: relative;
+  top: 25%;
   width: 100%;
-  padding: 0.8rem;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  outline: none;
-  font-size: 1rem;
+  text-align: center;
+}
+
+.overlay-content a {
+  display: block;
+  padding: 1rem;
+  font-size: 1.2rem;
+  color: #fff;
+  text-decoration: none;
   transition: 0.3s;
 }
 
-form input:focus, form textarea:focus {
-  border-color: #3498db;
-  box-shadow: 0 0 5px rgba(52, 152, 219, 0.3);
+.overlay-content a:hover {
+  color: #fbbf24;
 }
 
-form button {
-  background: #3498db;
-  color: #fff;
-  padding: 0.8rem 1.5rem;
-  border: none;
-  border-radius: 8px;
-  font-size: 1rem;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  transition: background 0.3s;
+/* Contact Container */
+.contact-container {
+  max-width: 950px;
+  margin: 60px auto;
+  background: white;
+  border-radius: 15px;
+  padding: 40px;
+  box-shadow: 0px 6px 20px rgba(0,0,0,0.1);
 }
 
-form button:hover {
-  background: #2980b9;
+.contact-header {
+  text-align: center;
+  margin-bottom: 30px;
 }
 
-.info {
-  margin-top: 2rem;
-  padding-top: 1.5rem;
-  border-top: 1px solid #eee;
+.contact-header h2 {
+  font-weight: 700;
+  margin-bottom: 10px;
 }
 
-.info h3 {
-  color: #2c3e50;
-  margin-bottom: 1rem;
-  font-size: 1.4rem;
+/* Info Cards */
+.icon-box {
+  font-size: 2.5rem;
+  color: #0d6efd;
+  margin-bottom: 10px;
 }
 
-.info p {
-  margin: 0.5rem 0;
-  font-size: 1rem;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  color: #444;
+.info-card {
+  text-align: center;
+  padding: 20px;
+  border-radius: 12px;
+  background: #f8f9fa;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
 }
 
-.info p i {
-  color: #3498db;
+.info-card:hover {
+  background: #e9ecef;
+  transform: translateY(-5px);
+}
+
+/* Flash Messages */
+.alert {
+  border-radius: 10px;
+  font-size: 0.95rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .nav { display: none; }
+  .hamburger { display: block; }
+  .contact-container { padding: 20px; }
 }

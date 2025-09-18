@@ -1,79 +1,133 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Contact Us - Data Bundle Ghana</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='header.css') }}">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Us</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
   <link rel="stylesheet" href="{{ url_for('static', filename='contact.css') }}">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
+  <!-- Header / Navbar -->
   <header class="site-header">
-    <div class="logo"><i class="fas fa-signal"></i> Manuel Data</div>
+    <div class="logo"><i class="bi bi-wifi"></i> Manuel Data</div>
     <nav class="nav">
-      <a href="{{ url_for('dashboard') }}"><i class="fas fa-home"></i> Home</a>
-      <a href="{{ url_for('purchase') }}"><i class="fas fa-shopping-cart"></i> Buy Data</a>
-      <a href="{{ url_for('profile') }}"><i class="fas fa-user"></i> Profile</a>
-      <a href="{{ url_for('wallet') }}"><i class="fas fa-wallet"></i> Wallet</a>
-      <a href="{{ url_for('faq') }}"><i class="fas fa-question-circle"></i> FAQ</a>
-      <a href="{{ url_for('contact') }}"><i class="fas fa-envelope"></i> Contact</a>
-      <a href="{{ url_for('logout') }}" class="login-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+      <a href="{{ url_for('dashboard') }}">🏠 Home</a>
+      <a href="{{ url_for('purchase') }}">💳 Buy Data</a>
+      <a href="{{ url_for('profile') }}">👤 Profile</a>
+      <a href="{{ url_for('wallet') }}">💰 Wallet</a>
+      <a href="{{ url_for('faq') }}">❓ FAQ</a>
+      <a href="{{ url_for('contact') }}">📞 Contact</a>
+      <a href="{{ url_for('logout') }}" class="login-btn">🚪 Logout</a>
     </nav>
-    <div class="hamburger" onclick="openNav()"><i class="fas fa-bars"></i></div>
+    <div class="hamburger" onclick="openNav()"><i class="bi bi-list"></i></div>
   </header>
 
+  <!-- Mobile Overlay Nav -->
   <div id="mobileNav" class="overlay-nav">
     <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
     <div class="overlay-content">
-      <a href="{{ url_for('dashboard') }}">Home</a>
-      <a href="{{ url_for('purchase') }}">Buy Data</a>
-      <a href="{{ url_for('profile') }}">Profile</a>
-      <a href="{{ url_for('wallet') }}">Wallet</a>
-      <a href="{{ url_for('faq') }}">FAQ</a>
-      <a href="{{ url_for('contact') }}">Contact</a>
-      <a href="{{ url_for('logout') }}" class="login-btn">Logout</a>
+      <a href="{{ url_for('dashboard') }}"><i class="bi bi-house-door"></i> Home</a>
+      <a href="{{ url_for('purchase') }}"><i class="bi bi-cart4"></i> Buy Data</a>
+      <a href="{{ url_for('profile') }}"><i class="bi bi-person-circle"></i> Profile</a>
+      <a href="{{ url_for('wallet') }}"><i class="bi bi-wallet2"></i> Wallet</a>
+      <a href="{{ url_for('faq') }}"><i class="bi bi-question-circle"></i> FAQ</a>
+      <a href="{{ url_for('contact') }}"><i class="bi bi-envelope"></i> Contact</a>
+      <a href="{{ url_for('logout') }}" class="login-btn"><i class="bi bi-box-arrow-right"></i> Logout</a>
     </div>
   </div>
 
-  <div class="contact-container">
-    <h2><i class="fas fa-envelope-open-text"></i> Contact Us</h2>
+  <!-- Contact Section -->
+  <div class="container contact-container">
+    <div class="contact-header">
+      <i class="bi bi-envelope-fill text-primary" style="font-size:3rem;"></i>
+      <h2>Contact Us</h2>
+      <p class="text-muted">We’d love to hear from you! Fill out the form below or reach us through our contact info.</p>
+    </div>
 
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="mb-3">
+          {% for category, message in messages %}
+            <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+              <i class="bi bi-info-circle"></i> {{ message }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <!-- Info Cards -->
+    <div class="row g-4 mb-4">
+      <div class="col-md-4">
+        <div class="info-card">
+          <div class="icon-box"><i class="bi bi-geo-alt-fill"></i></div>
+          <h5>Address</h5>
+          <p>123 Main Street,<br> Accra, Ghana</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="info-card">
+          <div class="icon-box"><i class="bi bi-telephone-fill"></i></div>
+          <h5>Phone</h5>
+          <p>+233 24 123 4567</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="info-card">
+          <div class="icon-box"><i class="bi bi-envelope-paper-fill"></i></div>
+          <h5>Email</h5>
+          <p>support@example.com</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Contact Form -->
     <form method="POST" action="{{ url_for('contact') }}">
-      <div class="form-group">
-        <label for="name"><i class="fas fa-user"></i> Full Name</label>
-        <input type="text" id="name" name="name" placeholder="Enter your name" required>
+      <div class="row g-3">
+        <div class="col-md-6">
+          <label class="form-label"><i class="bi bi-person-fill"></i> Your Name</label>
+          <div class="input-group">
+            <span class="input-group-text"><i class="bi bi-person"></i></span>
+            <input type="text" name="name" class="form-control" placeholder="Enter your name" required>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label"><i class="bi bi-envelope-fill"></i> Your Email</label>
+          <div class="input-group">
+            <span class="input-group-text"><i class="bi bi-at"></i></span>
+            <input type="email" name="email" class="form-control" placeholder="Enter your email" required>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <label class="form-label"><i class="bi bi-chat-left-dots-fill"></i> Message</label>
+          <textarea name="message" class="form-control" rows="5" placeholder="Write your message here..." required></textarea>
+        </div>
+        <div class="col-md-12 text-center">
+          <button type="submit" class="btn btn-primary btn-lg">
+            <i class="bi bi-send-fill"></i> Send Message
+          </button>
+        </div>
       </div>
-
-      <div class="form-group">
-        <label for="email"><i class="fas fa-at"></i> Email Address</label>
-        <input type="email" id="email" name="email" placeholder="Enter your email" required>
-      </div>
-
-      <div class="form-group">
-        <label for="message"><i class="fas fa-comment-dots"></i> Message</label>
-        <textarea id="message" name="message" rows="5" placeholder="Type your message..." required></textarea>
-      </div>
-
-      <button type="submit"><i class="fas fa-paper-plane"></i> Send Message</button>
     </form>
-
-    <div class="info">
-      <h3><i class="fas fa-headset"></i> Other Ways to Reach Us</h3>
-      <p><i class="fas fa-envelope"></i> support@databundlegh.com</p>
-      <p><i class="fas fa-phone"></i> +233 24 123 4567</p>
-      <p><i class="fas fa-map-marker-alt"></i> Accra, Ghana</p>
-    </div>
   </div>
 
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
   <script>
-    function openNav() {
-      document.getElementById("mobileNav").style.width = "100%";
-    }
+  function openNav() {
+    document.getElementById("mobileNav").style.width = "100%";
+  }
 
-    function closeNav() {
-      document.getElementById("mobileNav").style.width = "0%";
-    }
-  </script>
+  function closeNav() {
+    document.getElementById("mobileNav").style.width = "0";
+  }
+</script>
+
 </body>
 </html>

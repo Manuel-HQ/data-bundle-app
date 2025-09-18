@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>User Profile | Manuel Data</title>
+
+  <!-- CSS -->
   <link rel="stylesheet" href="{{ url_for('static', filename='profile.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='header.css') }}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
@@ -13,7 +15,7 @@
   <header class="site-header">
     <div class="logo">📶 Manuel Data</div>
     <nav class="nav">
-     <a href="{{ url_for('dashboard') }}">🏠 Home</a>
+      <a href="{{ url_for('dashboard') }}">🏠 Home</a>
       <a href="{{ url_for('purchase') }}">💳 Buy Data</a>
       <a href="{{ url_for('profile') }}">👤 Profile</a>
       <a href="{{ url_for('wallet') }}">💰 Wallet</a>
@@ -40,7 +42,7 @@
 
   <!-- Profile Container -->
   <div class="profile-container">
-    <h1><i class="fa-solid fa-user-circle"></i> Welcome, {{ user['username'] }}!</h1>
+    <h1><i class="fa-solid fa-user-circle"></i> Welcome, {{ user.username }}!</h1>
 
     {% if message %}
       <div class="success-message"><i class="fa-solid fa-circle-check"></i> {{ message }}</div>
@@ -53,25 +55,25 @@
     <form method="POST" action="{{ url_for('profile') }}" enctype="multipart/form-data" class="profile-form">
       <div class="form-group">
         <label><i class="fa-solid fa-user"></i> Username</label>
-        <input type="text" name="username" value="{{ user['username'] }}" required>
+        <input type="text" name="username" value="{{ user.username }}" required>
       </div>
 
       <div class="form-group">
         <label><i class="fa-solid fa-envelope"></i> Email</label>
-        <input type="email" name="email" value="{{ user['email'] }}" required>
+        <input type="email" name="email" value="{{ user.email }}" required>
       </div>
 
       <div class="form-group">
         <label><i class="fa-solid fa-phone"></i> Mobile</label>
-        <input type="tel" name="mobile" value="{{ user['mobile'] }}" required>
+        <input type="tel" name="mobile" value="{{ user.mobile }}" required>
       </div>
 
       <div class="form-group">
         <label><i class="fa-solid fa-venus-mars"></i> Gender</label>
         <select name="gender" required>
-          <option value="Male" {% if user['gender'] == 'Male' %}selected{% endif %}>Male</option>
-          <option value="Female" {% if user['gender'] == 'Female' %}selected{% endif %}>Female</option>
-          <option value="Other" {% if user['gender'] == 'Other' %}selected{% endif %}>Other</option>
+          <option value="Male" {% if user.gender == 'Male' %}selected{% endif %}>Male</option>
+          <option value="Female" {% if user.gender == 'Female' %}selected{% endif %}>Female</option>
+          <option value="Other" {% if user.gender == 'Other' %}selected{% endif %}>Other</option>
         </select>
       </div>
 
@@ -87,8 +89,9 @@
 
       <div class="form-group">
         <label><i class="fa-solid fa-image"></i> Profile Picture</label>
-        {% if user.get('profile_pic') %}
-          <img src="{{ url_for('static', filename='uploads/' + user['profile_pic']) }}" alt="Profile Picture" width="100" class="profile-pic-preview">
+        {% if user.profile_pic %}
+          <img src="{{ url_for('static', filename='uploads/' ~ user.profile_pic) }}" 
+               alt="Profile Picture" width="100" class="profile-pic-preview">
         {% endif %}
         <input type="file" name="profile_pic">
       </div>
@@ -97,7 +100,8 @@
     </form>
 
     <!-- Delete Account -->
-    <form method="POST" action="{{ url_for('delete_account') }}" onsubmit="return confirm('Are you sure you want to delete your account? This cannot be undone.');">
+    <form method="POST" action="{{ url_for('delete_account') }}" 
+          onsubmit="return confirm('Are you sure you want to delete your account? This cannot be undone.');">
       <button type="submit" class="delete-btn"><i class="fa-solid fa-trash"></i> Delete Account</button>
     </form>
 
