@@ -143,10 +143,89 @@ body {
   font-size: 0.95rem;
   box-shadow: 0 2px 8px rgba(0,0,0,0.05);
 }
+.card {
+    background: #ffffff;
+    border-radius: 20px;
+  }
 
+  .form-control:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 0.2rem rgba(13,110,253,.25);
+  }
+
+  textarea {
+    resize: none;
+  }
 /* Responsive */
 @media (max-width: 768px) {
   .nav { display: none; }
   .hamburger { display: block; }
   .contact-container { padding: 20px; }
+}
+form {
+  background: #ffffff;
+  padding: 2rem;
+  border-radius: 15px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+}
+
+/* Labels */
+form .form-label {
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+/* Input fields */
+form .form-control {
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  padding: 0.75rem 1rem;
+  transition: all 0.3s ease-in-out;
+}
+
+/* Input focus effect */
+form .form-control:focus {
+  border-color: #0d6efd;
+  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+
+/* Input groups (with icons) */
+form .input-group-text {
+  border-radius: 10px 0 0 10px;
+  background: #0d6efd;
+  color: #fff;
+  border: none;
+}
+
+/* Textarea */
+form textarea {
+  resize: none;
+  min-height: 150px;
+}
+
+/* Submit button */
+form button[type="submit"] {
+  border-radius: 30px;
+  padding: 0.75rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  transition: all 0.3s ease-in-out;
+}
+
+form button[type="submit"]:hover {
+  background-color: #0b5ed7;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(13,110,253,0.3);
+}
+
+/* Responsive tweaks */
+@media (max-width: 768px) {
+  form {
+    padding: 1.5rem;
+  }
+  form button[type="submit"] {
+    width: 100%;
+  }
 }

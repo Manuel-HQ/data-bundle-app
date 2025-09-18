@@ -1,113 +1,104 @@
-Flask Data Bundle Platform 💻📱
+# 📱 Data Bundle Sales Platform
 
-A simple Flask-based web application for selling data bundles with wallet integration.
-Users can register, log in, top up their wallet, and purchase bundles.
-Built with Flask, Bootstrap, and JSON file storage for persistence.
+A Flask-based web application for selling mobile data bundles with wallet integration, user authentication, profile management, and an admin dashboard.  
 
-🚀 Features
+## ✨ Features
+- 🔑 User Registration & Login (session-based authentication)
+- 👤 Profile Management (update info, upload profile picture)
+- 💰 Wallet System (top up, check balance, use for purchases)
+- 📦 Buy Data Bundles (MTN, Vodafone, AirtelTigo, etc.)
+- 📜 Transaction History & Dashboard
+- 📞 Contact Page with Email Support (Flask-Mail)
+- 📊 Admin Panel (view/manage users, transactions)
+- 🎨 Clean UI built with **Bootstrap 5** and **Bootstrap Icons**
 
-🔐 User registration & login
+---
 
-👛 Wallet system (top-up & spend)
+## 🛠 Tech Stack
+- **Backend:** Flask (Python 3.11/3.13 compatible)
+- **Database:** SQLite with SQLAlchemy ORM
+- **Frontend:** HTML, CSS, Bootstrap 5, Bootstrap Icons
+- **Email:** Flask-Mail (SMTP with Gmail or other providers)
+- **Deployment:** Render / Gunicorn (optional)
 
-📱 Buy data bundles with confirmation modal
+---
 
-🗂 Persistent storage with JSON files
+## 🚀 Installation & Setup
 
-📊 User dashboard with recent transactions
+### 1️⃣ Clone the Repository
+```bash
+git clone https://github.com/Manuel-HQ/data-bundle-app
+cd data-bundle-platform
+2️⃣ Create Virtual Environment
+bash
+Copy code
+python -m venv venv
+Activate it:
 
-🎨 Clean Bootstrap styling with icons
+Windows (PowerShell):
+
+powershell
+Copy code
+venv\Scripts\Activate.ps1
+Linux / Mac:
+
+bash
+Copy code
+source venv/bin/activate
+3️⃣ Install Dependencies
+bash
+Copy code
+pip install -r requirements.txt
+4️⃣ Configure Environment Variables
+Create a .env file in the root folder and add:
+
+env
+Copy code
+SECRET_KEY=your_secret_key_here
+MAIL_SERVER=smtp.gmail.com
+MAIL_PORT=465
+MAIL_USE_SSL=True
+MAIL_USERNAME=your_email@gmail.com
+MAIL_PASSWORD=your_app_password   # App Password if using Gmail
+5️⃣ Run the Application
+bash
+Copy code
+flask run
+The app will be available at:
+👉 http://127.0.0.1:5000/
 
 📂 Project Structure
-project/
-│── app.py                # Main Flask app
-│── requirements.txt       # Dependencies
-│── runtime.txt            # Python version for Render
-│── static/                # CSS, JS, Images
-│── templates/             # HTML files (Bootstrap styled)
-│── data/                  # JSON files for users, wallets, transactions
-│── README.md              # Project documentation
+csharp
+Copy code
+data-bundle-platform/
+│── app.py              # Main Flask app
+│── requirements.txt    # Project dependencies
+│── static/             # CSS, JS, images
+│── templates/          # HTML templates
+│── instance/           # Database (SQLite)
+│── venv/               # Virtual environment
+📨 Contact Page
+Users can send messages via the contact form
 
-⚙️ Installation (Local Setup)
+Messages are delivered via Flask-Mail to the configured email
 
-Clone this repository:
+⚡ Deployment (Render)
+Push code to GitHub
 
-git clone https://github.com/your-username/your-repo.git
-cd your-repo
+Create a new Render Web Service
 
+Set environment variables in Render dashboard
 
-Create and activate a virtual environment:
+Add gunicorn to requirements.txt
 
-python -m venv venv
-source venv/bin/activate   # On Mac/Linux
-venv\Scripts\activate      # On Windows
+Use the following start command:
 
-
-Install dependencies:
-
-pip install -r requirements.txt
-
-
-Run the Flask app:
-
-python app.py
-
-
-Open in browser:
-
-http://127.0.0.1:5000
-
-🌐 Deployment on Render
-
-Push your project to GitHub.
-
-Go to Render
-.
-
-Create a new Web Service and connect your repo.
-
-Set:
-
-Build Command:
-
-pip install -r requirements.txt
-
-
-Start Command:
-
+bash
+Copy code
 gunicorn app:app
 
 
-Environment:
-Python runtime.txt → python-3.11.9
-
-Deploy 🎉
-
-📦 Requirements
-
-Python 3.11.9
-
-Flask
-
-Gunicorn (for Render)
-
-Bootstrap (CDN included in templates)
-
-Install all with:
-
-pip install -r requirements.txt
-
-✨ Future Improvements
-
-📧 Email confirmation for transactions
-
-🏦 Integration with real payment APIs
-
-📊 Admin dashboard for sales overview
-
-🌙 Dark mode toggle
-
 👨‍💻 Author
 
-Developed by Emmanuel (Manuel-HQ) 🚀
+Developed by Developer Arena
 Community of Coders 💡
